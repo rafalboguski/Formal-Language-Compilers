@@ -1,4 +1,5 @@
-﻿using System;
+﻿using MahApps.Metro.Controls;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -15,14 +16,19 @@ using System.Windows.Shapes;
 
 namespace SQL
 {
-    /// <summary>
-    /// Interaction logic for MainWindow.xaml
-    /// </summary>
-    public partial class MainWindow : Window
+    public partial class MainWindow
     {
         public MainWindow()
         {
             InitializeComponent();
+            Editor.Focus();
         }
+
+        private void CodeChanged(object sender, TextChangedEventArgs e)
+        {
+            var editor = ((TextBox)sender).Text;
+            Console.Text = editor;
+        }
+
     }
 }
