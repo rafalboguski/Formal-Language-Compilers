@@ -52,7 +52,10 @@
                     </Style>
                 </RichTextBox.Resources>
                 <FlowDocument>
-                    <Paragraph>1234567890</Paragraph>
+                    <Paragraph>SELECT LAT_N, CITY, TEMP_F FROM STATS, STATION</Paragraph>
+                    <Paragraph>WHERE MONTH = 7 AND STATS.ID = STATION.ID</Paragraph>
+                    <Paragraph>ORDER BY TEMP_F;</Paragraph>
+                    
                 </FlowDocument>
             </RichTextBox>
         </Grid>

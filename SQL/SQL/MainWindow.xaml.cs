@@ -37,9 +37,9 @@ namespace SQL
             var editor = ((RichTextBox)sender);
             Console.Text = editor.GetText();
 
-            if (e.Key == Key.Left || e.Key == Key.Right || e.Key == Key.Up || e.Key == Key.Down)
-                return;
-            editor.HighlightSyntax();
+            if (e.Key == Key.F5)
+
+                editor.HighlightSyntax();
         }
     }
 
@@ -52,21 +52,33 @@ namespace SQL
             return new TextRange(richTextBox.Document.ContentStart, richTextBox.Document.ContentEnd).Text;
         }
 
+        private static List<string> _keywords = new List<string>()
+        {
+          "select","from","where","update","delete","alter",
+          "and","or","order by" ,"desc","asc"
+        };
+
         public static void HighlightSyntax(this RichTextBox richTextBox)
         {
-            var text = new TextRange(richTextBox.Document.ContentStart, richTextBox.Document.ContentEnd).Text.ToString();
+            var text = new TextRange(richTextBox.Document.ContentStart, richTextBox.Document.ContentEnd).Text.ToString().ToLower();
             var textRange = richTextBox.Selection;
 
             var savedCaretPosition = richTextBox.CaretPosition;
 
-            Colorize(richTextBox, 0, text.Length, Colors.White);
+            //clear colors
+            textRange.Select(richTextBox.Document.ContentStart, richTextBox.Document.ContentEnd);
+            textRange.ApplyPropertyValue(TextElement.ForegroundProperty, new SolidColorBrush(Colors.White));
 
 
-            var i = text.IndexOf("select");
-
-            if (i >= 0)
-                Colorize(richTextBox, i, "select".Length, Colors.Red);
-
+            foreach (var keyword in _keywords)
+            {
+                var indexes = text.AllIndexesOf(keyword);
+                foreach (var i in indexes)
+                {
+                    if (i >= 0)
+                        Colorize(richTextBox, i, keyword.Length, Colors.Teal);
+                }
+            }
 
             richTextBox.CaretPosition = savedCaretPosition;
         }
@@ -88,17 +100,32 @@ namespace SQL
             var i = 0;
             while (ret != null)
             {
-                string stringSoFar = new TextRange(ret, ret.GetPositionAtOffset(i, LogicalDirection.Forward)).Text;
-                if (stringSoFar.Length == x)
+                if (new TextRange(ret, ret.GetPositionAtOffset(i, LogicalDirection.Forward)).Text.Length == x)
                     break;
                 i++;
                 if (ret.GetPositionAtOffset(i, LogicalDirection.Forward) == null)
                     return ret.GetPositionAtOffset(i - 1, LogicalDirection.Forward);
-
             }
             ret = ret.GetPositionAtOffset(i, LogicalDirection.Forward);
             return ret;
         }
 
+    }
+
+    public static class StandardExtensions
+    {
+        public static List<int> AllIndexesOf(this string str, string value)
+        {
+            if (String.IsNullOrEmpty(value))
+                throw new ArgumentException("the string to find may not be empty", "value");
+            List<int> indexes = new List<int>();
+            for (int index = 0; ; index += value.Length)
+            {
+                index = str.IndexOf(value, index);
+                if (index == -1)
+                    return indexes;
+                indexes.Add(index);
+            }
+        }
     }
 }
