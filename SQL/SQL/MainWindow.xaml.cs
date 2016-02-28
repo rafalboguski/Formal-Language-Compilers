@@ -54,8 +54,8 @@ namespace SQL
 
         private static List<string> _keywords = new List<string>()
         {
-          "select","from","where","update","delete","alter",
-          "and","or","order by" ,"desc","asc"
+          "select ","from ","where ","update ","delete ","alter ",
+          "and ","or ","order by " ," desc"," asc"
         };
 
         public static void HighlightSyntax(this RichTextBox richTextBox)
@@ -73,41 +73,53 @@ namespace SQL
             foreach (var keyword in _keywords)
             {
                 var indexes = text.AllIndexesOf(keyword);
-                foreach (var i in indexes)
+                int inn = 0;
+                TextPointer startPos = richTextBox.Document.ContentStart; ;
+                for (var i = 0; i < indexes.Count(); i++)
                 {
-                    if (i >= 0)
-                        Colorize(richTextBox, i, keyword.Length, Colors.Teal);
+                    inn++;
+                    if (indexes[i] >= 0)
+                    {
+                        if (i > 0)
+                        {
+                            startPos = GetPoint(startPos, indexes[i] - indexes[i - 1]);
+                        }
+                        else
+                        {
+                            startPos = GetPoint(startPos, indexes[i]);
+                        }
+                        Colorize(richTextBox, startPos, indexes[i], keyword.Length, new SolidColorBrush(Colors.Teal));
+                    }
                 }
             }
 
             richTextBox.CaretPosition = savedCaretPosition;
         }
 
-        private static void Colorize(RichTextBox richTextBox, int offset, int length, Color color)
+        private static void Colorize(RichTextBox richTextBox, TextPointer from, int offset, int length, SolidColorBrush color)
         {
-            var textRange = richTextBox.Selection;
-            var start = richTextBox.Document.ContentStart;
-            var startPos = GetPoint(start, offset);
-            var endPos = GetPoint(start, offset + length);
+            var startPos = from;
+            var endPos = GetPoint(startPos, length);
 
-            textRange.Select(startPos, endPos);
-            textRange.ApplyPropertyValue(TextElement.ForegroundProperty, new SolidColorBrush(color));
+            richTextBox.Selection.Select(startPos, endPos);
+            richTextBox.Selection.ApplyPropertyValue(TextElement.ForegroundProperty, color);
         }
 
         private static TextPointer GetPoint(TextPointer start, int x)
         {
-            var ret = start;
-            var i = 0;
-            while (ret != null)
+            var begin = start;
+            var i = x;
+            while (begin != null)
             {
-                if (new TextRange(ret, ret.GetPositionAtOffset(i, LogicalDirection.Forward)).Text.Length == x)
+                var xxx = new TextRange(begin, begin.GetPositionAtOffset(i, LogicalDirection.Forward)).Text.Length;
+                if (xxx == x)
                     break;
                 i++;
-                if (ret.GetPositionAtOffset(i, LogicalDirection.Forward) == null)
-                    return ret.GetPositionAtOffset(i - 1, LogicalDirection.Forward);
+                if (begin.GetPositionAtOffset(i, LogicalDirection.Forward) == null)
+                    return begin.GetPositionAtOffset(i - 1, LogicalDirection.Forward);
             }
-            ret = ret.GetPositionAtOffset(i, LogicalDirection.Forward);
-            return ret;
+            begin = begin.GetPositionAtOffset(i, LogicalDirection.Forward);
+            return begin;
         }
 
     }
@@ -123,9 +135,10 @@ namespace SQL
             {
                 index = str.IndexOf(value, index);
                 if (index == -1)
-                    return indexes;
+                    return indexes.OrderBy(x => x).ToList();
                 indexes.Add(index);
             }
         }
     }
+
 }
