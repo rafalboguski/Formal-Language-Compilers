@@ -37,14 +37,15 @@
         </Grid.RowDefinitions>
 
         <StackPanel x:Name="Navigation_StackPanel" Grid.Row="0" Orientation="Horizontal" Margin="5,0,5,0">
-            <Label>SQL Compiler</Label>
+            <Button x:Name="Compile_Button">Compile</Button>
+            <Button x:Name="Colorize_Button" Click="Colorize_Button_Click">Colorize</Button>
         </StackPanel>
 
         <Grid Grid.Row="1" Margin="5,5,5,0">
             <RichTextBox x:Name="Editor" AcceptsReturn="True" AcceptsTab="True" Focusable="True" 
                      ScrollViewer.VerticalScrollBarVisibility="Visible" 
                      FontFamily="Source Code Pro" FontSize="18"
-                     KeyUp="CodeChanged"
+                     KeyUp="Colorize_Key"
                      >
                 <RichTextBox.Resources>
                     <Style TargetType="{x:Type Paragraph}">

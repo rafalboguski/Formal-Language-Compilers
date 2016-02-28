@@ -1,4 +1,5 @@
 ﻿using MahApps.Metro.Controls;
+using MahApps.Metro.Controls.Dialogs;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -29,17 +30,20 @@ namespace SQL
             Editor.Focus();
         }
 
-        private void CodeChanged(object sender, KeyEventArgs e)
+        private void Colorize_Key(object sender, KeyEventArgs e)
         {
-            if (Console == null)
-                return;
-
-            var editor = ((RichTextBox)sender);
-            Console.Text = editor.GetText();
-
             if (e.Key == Key.F5)
+                Colorize();
+        }
 
-                editor.HighlightSyntax();
+        private void Colorize_Button_Click(object sender, RoutedEventArgs e)
+        {
+            Colorize();
+        }
+
+        private void Colorize()
+        {
+            Editor.HighlightSyntax();
         }
     }
 
@@ -52,10 +56,16 @@ namespace SQL
             return new TextRange(richTextBox.Document.ContentStart, richTextBox.Document.ContentEnd).Text;
         }
 
-        private static List<string> _keywords = new List<string>()
+        private static List<string> _keywords = new List<string>
         {
-          "select ","from ","where ","update ","delete ","alter ",
-          "and ","or ","order by " ," desc"," asc"
+          "select","from","where","update","delete","alter",
+          "and","or","order by" ," desc"," asc","insert","into","values" ,"join", "as ","like ","not ","on " ,
+            ",", "\"", "\'", ";", "=", "-", "+" ,"(", ")"
+
+        };
+
+        public static List<string> _signs = new List<string>
+        {
         };
 
         public static void HighlightSyntax(this RichTextBox richTextBox)
@@ -69,32 +79,33 @@ namespace SQL
             textRange.Select(richTextBox.Document.ContentStart, richTextBox.Document.ContentEnd);
             textRange.ApplyPropertyValue(TextElement.ForegroundProperty, new SolidColorBrush(Colors.White));
 
-
-            foreach (var keyword in _keywords)
-            {
-                var indexes = text.AllIndexesOf(keyword);
-                int inn = 0;
-                TextPointer startPos = richTextBox.Document.ContentStart; ;
-                for (var i = 0; i < indexes.Count(); i++)
-                {
-                    inn++;
-                    if (indexes[i] >= 0)
-                    {
-                        if (i > 0)
-                        {
-                            startPos = GetPoint(startPos, indexes[i] - indexes[i - 1]);
-                        }
-                        else
-                        {
-                            startPos = GetPoint(startPos, indexes[i]);
-                        }
-                        Colorize(richTextBox, startPos, indexes[i], keyword.Length, new SolidColorBrush(Colors.Teal));
-                    }
-                }
-            }
+            ColorizeSet(richTextBox, text, _keywords, new SolidColorBrush(Colors.Teal));
+            ColorizeSet(richTextBox, text, _signs, new SolidColorBrush(Colors.Yellow));
 
             richTextBox.CaretPosition = savedCaretPosition;
         }
+
+        private static void ColorizeSet(RichTextBox richTextBox, string text, List<string> keywords, SolidColorBrush color)
+        {
+            foreach (var keyword in keywords)
+            {
+                var indexes = text.AllIndexesOf(keyword).ToArray();
+                TextPointer startPos = richTextBox.Document.ContentStart; ;
+                for (var i = 0; i < indexes.Count(); i++)
+                {
+                    if (i > 0)
+                    {
+                        startPos = GetPoint(startPos, indexes[i] - indexes[i - 1]);
+                    }
+                    else
+                    {
+                        startPos = GetPoint(startPos, indexes[i]);
+                    }
+                    Colorize(richTextBox, startPos, indexes[i], keyword.Length, color);
+                }
+            }
+        }
+
 
         private static void Colorize(RichTextBox richTextBox, TextPointer from, int offset, int length, SolidColorBrush color)
         {
