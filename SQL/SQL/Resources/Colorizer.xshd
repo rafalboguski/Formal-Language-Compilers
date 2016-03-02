@@ -1,9 +1,9 @@
 ﻿<?xml version="1.0"?>
 <SyntaxDefinition name ="PLSQL" extensions = ".sql" xmlns="http://icsharpcode.net/sharpdevelop/syntaxdefinition/2008">
-  <Color name="Comment" foreground="Green" exampleText="// comment" />
-  <Color name="String" foreground="Red" exampleText="$text = &quot;Hello, World!&quot;" />
-  <Color name="Keywords" foreground="Blue" fontWeight="bold" exampleText="global $database;" />
-  <Color name="ReservedWords" foreground="Blue" fontWeight="bold" exampleText="global $database;" />
+  <Color name="Comment" foreground="Gray" exampleText="// comment" />
+  <Color name="String" foreground="#C1A45F" exampleText="$text = &quot;Hello, World!&quot;" />
+  <Color name="Keywords" foreground="Pink" fontWeight="bold" exampleText="global $database;" />
+  <Color name="ReservedWords" foreground="#476C91" fontWeight="bold" exampleText="global $database;" />
   <Color name="Functions" foreground="Purple" fontWeight="bold" exampleText="global $database;" />
   <RuleSet>
     <Span color="Comment">
@@ -11,8 +11,8 @@
     </Span>
 
     <Span color="Comment" multiline="true">
-      <Begin>/\*</Begin>
-      <End>\*/</End>
+      <Begin>--</Begin>
+      <End>--</End>
     </Span>
 
     <Span color="String" multiline="true">
