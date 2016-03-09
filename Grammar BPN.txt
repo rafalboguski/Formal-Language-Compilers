@@ -1,0 +1,76 @@
+<text>			::= <statements> <EOF>
+<statements> 		::= <space> <statement> <space> | <space> <statement> <statements> 
+<statement>		::= <CREATE> | <DROP> | <ALTER> | <RENAME> | <SELECT> | <DELETE>
+
+<CREATE>		::= <create> <space> <object_type> <space> <name> <space> <lb> <space> <column_definitions> <space> <rb> <semicolon>
+<column_definitions>	::= <column_definition> | <column_definition> <coma> <space> <column_definitions>
+<column_definition>	::= <name> <space> <data_type> <constrain>
+
+<ALTER>			::= <alter> <space> <object_type> <space> <name> <space> <parametr> <semicolon> | <space> <object_type> <space> <name> <space> <modify> <space> <lb> <space> <column_definitions> <space> <lb> <space> <semicolon>
+
+<parametr>		::= <add_parametr> | <drop_parametr> | <alter_parametr>
+<add_parametr>		::= <add> <space> <column_definition> 
+<drop_parametr>		::= <drop> <space> <column> <space> <name>
+<alter_parametr>	::= <alter> <space> <column> <space> <data_type>
+
+<RENAME>	::= <rename> <space> <table> <space> <name> <space> <to> <name> <semicolon> 
+
+<DROP>		::= <drop> <space> <object_type> <space> <name> <semicolon>
+
+<column_definitions>	::= <column_definition> | <column_definition> <coma> <space> <column_definitions>
+<column_definition>	::= <name> <space> <data_type> <constrain>
+
+<object_type>		::= <table>	
+
+<create>		::= "CREATE" | "create"
+<alter>			::= "ALTER" | "alter"
+<add>			::= "ADD" | "add"
+<modify>		::= "MODIFY" | "modify"	
+<rename>		::= "RENAME" | "rename"
+<to>			::= "TO" | "to"
+<drop>			::= "DROP" | "drop"
+
+<SELECT> 		::= <select> <space> <select_parameters> <space> <from> <space> <name> <space> <semicolon> | <space> <select> <space> <select_parameters> <space> <from> <space> <name> <space> <where> <where_parametrs> <space> <semicolon>
+
+<select_parameters> 	::= "*" | <name> | <name> | <name> <space> <coma> <space> <select_parameters>
+
+<DELETE> 		::= <delete> <space> <from> <space> <name> <coma> | <delete> <space> <from> <space> <name> <where> <where_parametrs> <coma>
+
+
+<where_parametrs>	::= <where_parametr> | <where_parametr> <space> <coma> <space> <and_or> <space> <where_parametrs>
+<where_parametr>	::=	<name> <space> <operation> <name> 
+<and_or> 			::= "AND" | "and" | "OR" | "or"
+<operation>			::= "=" | "<>" | "<" |">" | "<=" | ">=" | "BETWEEN" | "between" | "like" | "not like" | "LIKE"
+
+<select> 		::= "SELECT" | "select"
+<delete> 		::= "DELETE" | "delete"
+<where>  		::= "WHERE" | "where"
+<from>			::= "FROM" | "from"
+
+<table>			::= "TABLE" | "table"
+<column>		::= "COLUMN" | "column"
+
+<data_type>		::= <integer> | <decimal> | <number> | <char> | <varchar> | <varchar2> | <date> | <datetime>
+<integer> 		::= "INTEGER" | "integer"
+<decimal> 		::= "DECIMAL" <size_double> | "decimal" <size_double>
+<number> 		::= "NUMBER" <size> | "NUMBER" <size_double> | "number" <size> | "number" <size_double>
+<char> 			::= "CHAR" <size> | "char" <size>
+<varchar> 		::= "VARCHAR" <size> | "varchar" <size>
+<varchar2> 		::= "VARCHAR2" <size> | "varchar2" <size>
+<date> 			::= "DATE" | "date" 
+<datetime>		::= "DATETIME" | "datetime" 
+<size>			::= <lb> <number> <rb>
+<size_double>		::= <lb> <number> <coma> <number> <rb>
+
+<constrain>		::= "PRIMARY KEY" | "primary key" | "NULL" | "null" | "NOT NULL" | "not null" 
+
+<name>			::= <letters> | <letters> <number>
+<letters>		::= /[A-Za-z]/
+<number>		::= /[0-9]/
+
+<lb>			::= "("
+<rb>			::= ")"
+<semicolon>		::= ";"
+<coma>			::= ","
+<space>			::= <white_sign> | <space> <white_sign>
+<white_sign>		::= " " | /\s/
