@@ -3,6 +3,7 @@ using ICSharpCode.AvalonEdit.Highlighting.Xshd;
 using ICSharpCode.TextEditor.Document;
 using MahApps.Metro.Controls;
 using MahApps.Metro.Controls.Dialogs;
+using SQL_Parser;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -69,15 +70,14 @@ namespace SQL
 
         private void Editor_KeyDown(object sender, KeyEventArgs e)
         {
-            Console.Text = "";
+            var parser = new ParserSql();
+            Console.Text = parser.ValidateSQL(Editor.Text.ToString());
+        }
 
-            var list = Editor.Text.ToString().Split().Distinct().ToList();
-            foreach (var x in list)
-            {
-                float hash = x.GetHashCode() / 10000000f;
-                Console.Text += (Math.Pow(hash, 2)).ToString() + " ";
-            }
-
+        private void Editor_KeyDown(object sender, EventArgs e)
+        {
+            var parser = new ParserSql();
+            Console.Text = parser.ValidateSQL(Editor.Text.ToString());
         }
     }
 }

@@ -8,7 +8,7 @@ using SQL_Parser.Model;
 
 namespace SQL_Parser
 {
-    class ParserSql
+    public class ParserSql
     {
         private List<Keyword> _keywords = new List<Keyword>()
         {
@@ -19,8 +19,8 @@ namespace SQL_Parser
             new Keyword("semicolon", "(;)")
         };
 
-        
-        public void ValidateSQL(string INPUT = "select cli_name from   t_client where cli_id = '34';")
+
+        public string ValidateSQL(string INPUT = "select cli_name from   t_client where cli_id = '34';")
         {
             // tokenize input
             var keywordTokens = TokenizeKeywords(INPUT, _keywords);
@@ -34,21 +34,22 @@ namespace SQL_Parser
                 Console.Write("<" + token.Name + "> ");
 
             Console.WriteLine("\nall");
+            var OUTPUT = "";
             foreach (var token in tokens)
             {
                 if (token.userMade)
-                    Console.Write("|" + token.Name + "| ");
+                    OUTPUT += ("|" + token.Name + "| ");
 
                 else
-                    Console.Write("<" + token.Name + "> ");
+                    OUTPUT += ("<" + token.Name + "> ");
             }
 
             #endregion
 
             // validate
 
-            var OUTPUT = "";
-            Console.Read();
+            return OUTPUT;
+
         }
 
         private List<Token> TokenizeKeywords(string INPUT, List<Keyword> keywords)
