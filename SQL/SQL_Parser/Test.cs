@@ -16,6 +16,7 @@ namespace SQL_Parser
             Thread.CurrentThread.CurrentUICulture = CultureInfo.InvariantCulture;
             var parser = new ParserSql();
 
+            parser.ValidateSQL();
            
 
         }
