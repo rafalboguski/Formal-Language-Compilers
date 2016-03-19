@@ -70,7 +70,7 @@
             <RowDefinition Height="35"/>
             <RowDefinition MinHeight="100" Height="*"/>
             <RowDefinition Height="5"/>
-            <RowDefinition MinHeight="100" Height="100"/>
+            <RowDefinition MinHeight="100" Height="*"/>
         </Grid.RowDefinitions>
 
         <StackPanel x:Name="Navigation_StackPanel" Grid.Row="0" Orientation="Horizontal" Margin="5,0,5,0">

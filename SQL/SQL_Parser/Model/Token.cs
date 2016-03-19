@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace SQL_Parser.Model
 {
-    class Token
+    public class Token
     {
         public string Name { get; set; }
         public int Index { get; set; }

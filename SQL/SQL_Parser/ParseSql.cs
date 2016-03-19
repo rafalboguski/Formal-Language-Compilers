@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Text.RegularExpressions;
 using SQL_Parser.Model;
+using SQL_Parser.Grammar;
 
 namespace SQL_Parser
 {
@@ -20,20 +21,21 @@ namespace SQL_Parser
         };
 
 
-        public string ValidateSQL(string INPUT = "select cli_name from   t_client where cli_id = '34';")
+        public string ValidateSQL(string INPUT = "select cli_name from   t_client where warunek;")
         {
             // tokenize input
             var keywordTokens = TokenizeKeywords(INPUT, _keywords);
             var tokens = TokenizeCustomText(INPUT, keywordTokens);
 
             #region DEBUG
+            /*
+       Console.WriteLine(INPUT);
+       Console.WriteLine("keywords");
+       foreach (var token in keywordTokens)
+           Console.Write("<" + token.Name + "> ");
 
-            Console.WriteLine(INPUT);
-            Console.WriteLine("keywords");
-            foreach (var token in keywordTokens)
-                Console.Write("<" + token.Name + "> ");
-
-            Console.WriteLine("\nall");
+       Console.WriteLine("\nall");
+*/
             var OUTPUT = "";
             foreach (var token in tokens)
             {
@@ -47,6 +49,12 @@ namespace SQL_Parser
             #endregion
 
             // validate
+
+            var state = new Word_STATEMENT();
+            var ddd = state.IsMatch(tokens);
+
+            Console.WriteLine("end " + ddd);
+            Console.Read();
 
             return OUTPUT;
 

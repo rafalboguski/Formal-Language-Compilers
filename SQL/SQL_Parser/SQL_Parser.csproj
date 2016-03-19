@@ -43,6 +43,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Grammar\Statement.cs" />
     <Compile Include="Model\Keyword.cs" />
     <Compile Include="Model\Token.cs" />
     <Compile Include="ParseSql.cs" />

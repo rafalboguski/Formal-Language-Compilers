@@ -35,7 +35,7 @@ namespace SQL
             Editor.Focus();
 
             Editor.ShowLineNumbers = true;
-            Editor.Text = "select * from t_user where id = '34';\n\n\n";
+            Editor.Text = "select * from t_user where lol;";
 
             // load syntax theme
             using (var s = new StreamReader(@"C:\Users\user\Documents\GitHubVisualStudio\Formal-Language-Compilers\SQL\SQL\Resources\Colorizer.xshd"))
@@ -68,16 +68,35 @@ namespace SQL
         {
         }
 
+
+  
+
+        long waiter = DateTime.Now.Ticks / TimeSpan.TicksPerMillisecond;
         private void Editor_KeyDown(object sender, KeyEventArgs e)
         {
-            var parser = new ParserSql();
-            Console.Text = parser.ValidateSQL(Editor.Text.ToString());
+            var ddd = DateTime.Now.Ticks / TimeSpan.TicksPerMillisecond - waiter;
+            if (ddd > 300)
+            {
+                var parser = new ParserSql();
+                Console.Text = parser.ValidateSQL(Editor.Text.ToString());
+            }
+            waiter = DateTime.Now.Ticks / TimeSpan.TicksPerMillisecond;
+
+
+
         }
 
         private void Editor_KeyDown(object sender, EventArgs e)
         {
-            var parser = new ParserSql();
-            Console.Text = parser.ValidateSQL(Editor.Text.ToString());
+            var ddd = DateTime.Now.Ticks / TimeSpan.TicksPerMillisecond - waiter;
+            if (ddd > 300  )
+            {
+                Debug.WriteLine("VALIDATE "+ ddd);
+                var parser = new ParserSql();
+                Console.Text = parser.ValidateSQL(Editor.Text.ToString());
+            }
+            waiter = DateTime.Now.Ticks / TimeSpan.TicksPerMillisecond;
+
         }
     }
 }
