@@ -27,5 +27,11 @@ namespace SQL_Parser.Model
             Index = index;
             Length = length;
         }
+
+
+        public override string ToString()
+        {
+            return "Token { Name: " + Name + ", Index: " + Index + ", Length: " + Length + " }";
+        }
     }
 }

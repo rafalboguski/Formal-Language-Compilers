@@ -21,7 +21,7 @@ namespace SQL_Parser
         };
 
 
-        public string ValidateSQL(string INPUT = "select cli_name from   t_client where warunek;select    adress from   user where lol;")
+        public string ValidateSQL(string INPUT = "select cli_name from   t_client where warunek;select    adress from   user;")
         {
             // tokenize input
             var keywordTokens = TokenizeKeywords(INPUT, _keywords);
@@ -43,7 +43,7 @@ namespace SQL_Parser
                     OUTPUT += ("|" + token.Name + "| ");
 
                 else
-                    OUTPUT += ("<" + token.Name + "> ");
+                    OUTPUT += ("<" + token);
             }
 
             #endregion
@@ -54,6 +54,15 @@ namespace SQL_Parser
             var ddd = state.IsMatch(tokens);
 
             Console.WriteLine("end " + ddd);
+
+            Console.WriteLine("ERRORS ");
+
+            foreach (var item in Word.GrammarErrors)
+            {
+                Console.WriteLine(item);
+
+            }
+
             Console.Read();
 
             return OUTPUT;

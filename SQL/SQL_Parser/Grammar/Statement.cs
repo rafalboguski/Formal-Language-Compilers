@@ -10,12 +10,27 @@ namespace SQL_Parser.Grammar
 
     public class GrammarError
     {
+
+        public GrammarError(Token token, string expected)
+        {
+            this.Token = token;
+            this.Expected = expected;
+        }
+
         public Token Token { get; set; }
+        public string Expected { get; set; }
+
+        public override string ToString()
+        {
+            return "Expected token: <" + Expected + "> Found " + Token;
+        }
 
     }
 
     class Word
     {
+        public static List<GrammarError> GrammarErrors { get; set; } = new List<GrammarError>();
+
         public string Name { get; set; }
 
         // pierwsza lista to alternatywy kolejna to sekwencje
@@ -33,25 +48,27 @@ namespace SQL_Parser.Grammar
                     return false;
                 }
 
+                var token = tokens.First();
+
                 // change to names digits and so on
-                if (tokens.First().userMade == true && Name == "userMade")
+                if (token.userMade == true && Name == "userMade")
                 {
-                    Console.WriteLine("in: " + tokens.First().Name + "\t expected: " + Name + "\t true");
+                    Console.WriteLine("in: " + token.Name + "\t expected: " + Name + "\t true");
 
                     tokens.RemoveAt(0);
                     return true;
                 }
 
-                if (tokens.First().Name == Name)
+                if (token.Name == Name)
                 {
-                    Console.WriteLine("in: " + tokens.First().Name + "\t expected: " + Name + "\t true");
+                    Console.WriteLine("in: " + token.Name + "\t expected: " + Name + "\t true");
 
                     tokens.RemoveAt(0);
                     return true;
                 }
-
                 else
                 {
+                    GrammarErrors.Add(new GrammarError(token, Name));
                     return false;
                 }
             }
