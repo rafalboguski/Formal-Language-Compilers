@@ -21,7 +21,7 @@ namespace SQL_Parser
         };
 
 
-        public string ValidateSQL(string INPUT = "select cli_name from   t_client where warunek;select    adress from   user;")
+        public string ValidateSQL(string INPUT = "select cli_name    t_client where warunek;select cli_name from   t_client where warunek;")
         {
             // tokenize input
             var keywordTokens = TokenizeKeywords(INPUT, _keywords);

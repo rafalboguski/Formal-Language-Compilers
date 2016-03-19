@@ -53,7 +53,7 @@ namespace SQL_Parser.Grammar
                 // change to names digits and so on
                 if (token.userMade == true && Name == "userMade")
                 {
-                    Console.WriteLine("in: " + token.Name + "\t expected: " + Name + "\t true");
+                    Console.WriteLine( token.Index + "\tin: <" + token.Name + ">\t expected: <" + Name + ">\t true");
 
                     tokens.RemoveAt(0);
                     return true;
@@ -61,7 +61,7 @@ namespace SQL_Parser.Grammar
 
                 if (token.Name == Name)
                 {
-                    Console.WriteLine("in: " + token.Name + "\t expected: " + Name + "\t true");
+                    Console.WriteLine(token.Index + "\tin: <" + token.Name + ">\t expected: <" + Name + ">\t true");
 
                     tokens.RemoveAt(0);
                     return true;
