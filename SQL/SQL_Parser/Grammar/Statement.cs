@@ -1,6 +1,7 @@
 ﻿using SQL_Parser.Model;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -53,7 +54,7 @@ namespace SQL_Parser.Grammar
                 // change to names digits and so on
                 if (token.userMade == true && Name == "userMade")
                 {
-                    Console.WriteLine( token.Index + "\tin: <" + token.Name + ">\t expected: <" + Name + ">\t true");
+                    Debug.WriteLine( token.Index + "\tin: <" + token.Name + ">\t expected: <" + Name + ">\t true");
 
                     tokens.RemoveAt(0);
                     return true;
@@ -61,7 +62,7 @@ namespace SQL_Parser.Grammar
 
                 if (token.Name == Name)
                 {
-                    Console.WriteLine(token.Index + "\tin: <" + token.Name + ">\t expected: <" + Name + ">\t true");
+                    Debug.WriteLine(token.Index + "\tin: <" + token.Name + ">\t expected: <" + Name + ">\t true");
 
                     tokens.RemoveAt(0);
                     return true;

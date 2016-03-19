@@ -1,9 +1,12 @@
-﻿using ICSharpCode.AvalonEdit.Highlighting;
+﻿using ICSharpCode.AvalonEdit.Document;
+using ICSharpCode.AvalonEdit.Highlighting;
 using ICSharpCode.AvalonEdit.Highlighting.Xshd;
+using ICSharpCode.AvalonEdit.Rendering;
 using ICSharpCode.TextEditor.Document;
 using MahApps.Metro.Controls;
 using MahApps.Metro.Controls.Dialogs;
 using SQL_Parser;
+using SQL_Parser.Grammar;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -69,34 +72,60 @@ namespace SQL
         }
 
 
-  
+
 
         long waiter = DateTime.Now.Ticks / TimeSpan.TicksPerMillisecond;
         private void Editor_KeyDown(object sender, KeyEventArgs e)
         {
-            var ddd = DateTime.Now.Ticks / TimeSpan.TicksPerMillisecond - waiter;
-            if (ddd > 300)
-            {
-                var parser = new ParserSql();
-                Console.Text = parser.ValidateSQL(Editor.Text.ToString());
-            }
-            waiter = DateTime.Now.Ticks / TimeSpan.TicksPerMillisecond;
-
-
-
+            ddddd();
         }
 
         private void Editor_KeyDown(object sender, EventArgs e)
         {
-            var ddd = DateTime.Now.Ticks / TimeSpan.TicksPerMillisecond - waiter;
-            if (ddd > 300  )
-            {
-                Debug.WriteLine("VALIDATE "+ ddd);
-                var parser = new ParserSql();
-                Console.Text = parser.ValidateSQL(Editor.Text.ToString());
-            }
-            waiter = DateTime.Now.Ticks / TimeSpan.TicksPerMillisecond;
+            ddddd();
+        }
 
+        private void ddddd()
+        {
+            //var ddd = DateTime.Now.Ticks / TimeSpan.TicksPerMillisecond - waiter;
+            //if (ddd > 300)
+            //{
+            //Debug.WriteLine("VALIDATE " + ddd);
+            var errors = new ParserSql().ValidateSQL(Editor.Text.ToString());
+
+            Editor.TextArea.TextView.LineTransformers.Add(new ColorizeAvalonEdit(errors));
+
+            Console.Text = "";
+            foreach (var error in errors)
+            {
+                Console.Text += error + "\n";
+            }
+            // }
+            // waiter = DateTime.Now.Ticks / TimeSpan.TicksPerMillisecond;
         }
     }
+
+    public class ColorizeAvalonEdit : DocumentColorizingTransformer
+    {
+        private List<GrammarError> errors { get; set; }
+
+        public ColorizeAvalonEdit(List<GrammarError> errors)
+        {
+            this.errors = errors;
+        }
+
+        protected override void ColorizeLine(DocumentLine line)
+        {
+            foreach (var error in errors)
+            {
+                var index = error.Token.Index;
+                var length = error.Token.Length;
+
+                if (index >= line.Offset && index < line.Offset + line.Length)
+                    base.ChangeLinePart(index, index + length, (VisualLineElement element) => { Typeface tf = element.TextRunProperties.Typeface; element.BackgroundBrush = new SolidColorBrush(Colors.Red); });
+            }
+        }
+
+    }
+
 }

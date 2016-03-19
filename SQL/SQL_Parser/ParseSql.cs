@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using System.Text.RegularExpressions;
 using SQL_Parser.Model;
 using SQL_Parser.Grammar;
+using System.Diagnostics;
 
 namespace SQL_Parser
 {
@@ -21,7 +22,7 @@ namespace SQL_Parser
         };
 
 
-        public string ValidateSQL(string INPUT = "select cli_name    t_client where warunek;select cli_name from   t_client where warunek;")
+        public List<GrammarError> ValidateSQL(string INPUT = "select cli_name  fr0m  t_client where warunek;select cli_name from   t_client whore warunek;")
         {
             // tokenize input
             var keywordTokens = TokenizeKeywords(INPUT, _keywords);
@@ -50,22 +51,22 @@ namespace SQL_Parser
 
             // validate
 
+            Word.GrammarErrors.Clear();
             var state = new Word_STATEMENTS();
             var ddd = state.IsMatch(tokens);
 
-            Console.WriteLine("end " + ddd);
+            Debug.WriteLine("end " + ddd);
 
-            Console.WriteLine("ERRORS ");
+            Debug.WriteLine("ERRORS ");
 
             foreach (var item in Word.GrammarErrors)
             {
-                Console.WriteLine(item);
+                Debug.WriteLine(item);
 
             }
 
-            Console.Read();
-
-            return OUTPUT;
+           
+            return Word.GrammarErrors;
 
         }
 
