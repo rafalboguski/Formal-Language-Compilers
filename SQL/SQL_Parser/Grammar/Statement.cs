@@ -8,6 +8,12 @@ using System.Threading.Tasks;
 namespace SQL_Parser.Grammar
 {
 
+    public class GrammarError
+    {
+        public Token Token { get; set; }
+
+    }
+
     class Word
     {
         public string Name { get; set; }
@@ -15,12 +21,18 @@ namespace SQL_Parser.Grammar
         // pierwsza lista to alternatywy kolejna to sekwencje
         public List<List<Word>> Words { get; set; }
 
+        public bool loop { get; set; }
+
         public bool IsMatch(List<Token> tokens)
         {
-            var match = false;
-
-            if(Words == null)
+            // end of the road
+            if (Words == null)
             {
+                if (tokens.Any() == false)
+                {
+                    return false;
+                }
+
                 // change to names digits and so on
                 if (tokens.First().userMade == true && Name == "userMade")
                 {
@@ -37,33 +49,74 @@ namespace SQL_Parser.Grammar
                     tokens.RemoveAt(0);
                     return true;
                 }
-                
+
                 else
                 {
                     return false;
                 }
             }
 
-            foreach (var alternative in Words)
+            // deep scan
+            var alternatives = Words;
+            foreach (var sequence in alternatives)
             {
                 var sequenceMatch = true;
-                foreach (var sequence in alternative)
+
+
+                if (loop)
                 {
-                    if (sequence.IsMatch(tokens) == false)
+                    var loops = 0;
+                    var continueLoop = true;
+                    while (continueLoop)
                     {
-                        sequenceMatch = false;
-                        break;
+                        foreach (var word in sequence)
+                        {
+                            if (word.IsMatch(tokens) == false)
+                            {
+                                if (loops >= 1)
+                                {
+                                    sequenceMatch = true;
+                                    continueLoop = false;
+                                }
+                                else
+                                {
+                                    sequenceMatch = false;
+                                    continueLoop = false;
+                                }
+                                break;
+                            }
+                        }
+                        loops++;
                     }
                 }
+                else
+                    foreach (var word in sequence)
+                    {
+                        if (word.IsMatch(tokens) == false)
+                        {
+                            sequenceMatch = false;
+                            break;
+                        }
+                    }
 
-                if (sequenceMatch == true)
-                {
-                    return true;
-                }
-
+                return sequenceMatch;
             }
 
-            return match;
+            return false;
+        }
+
+    }
+
+    class Word_STATEMENTS : Word
+    {
+
+        public Word_STATEMENTS()
+        {
+            Words = new List<List<Word>>();
+            Words.Add(new List<Word>() { new Word_STATEMENT() });
+
+            loop = true;
+
         }
 
     }

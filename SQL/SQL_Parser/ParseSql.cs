@@ -21,7 +21,7 @@ namespace SQL_Parser
         };
 
 
-        public string ValidateSQL(string INPUT = "select cli_name from   t_client where warunek;")
+        public string ValidateSQL(string INPUT = "select cli_name from   t_client where warunek;select    adress from   user where lol;")
         {
             // tokenize input
             var keywordTokens = TokenizeKeywords(INPUT, _keywords);
@@ -50,7 +50,7 @@ namespace SQL_Parser
 
             // validate
 
-            var state = new Word_STATEMENT();
+            var state = new Word_STATEMENTS();
             var ddd = state.IsMatch(tokens);
 
             Console.WriteLine("end " + ddd);
