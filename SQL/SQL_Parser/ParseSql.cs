@@ -17,9 +17,17 @@ namespace SQL_Parser
             new Keyword("select", "(SELECT|select)"),
             new Keyword("from", "(FROM|from)"),
             new Keyword("where", "(WHERE|where)"),
+            new Keyword("order_by", @"(orderby|ORDERBY|ORDERby|orderBY)"),
+
+            new Keyword("delete", "(DELETE|delete)"),
 
 
-            new Keyword("equals", @"(=)"),
+            new Keyword("and_or", @"(and|AND)"),
+            new Keyword("asc_desc", @"(asc|ASC|desc|DESC)"),
+
+
+            new Keyword("equals", @"(=|like|LIKE)"),
+            new Keyword("quote", @"(')"),
             new Keyword("semicolon", "(;)"),
             new Keyword("comma", "(,)"),
             new Keyword("space", @"(\s+)")

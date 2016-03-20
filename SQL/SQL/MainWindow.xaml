@@ -74,10 +74,8 @@
         </Grid.RowDefinitions>
 
         <StackPanel x:Name="Navigation_StackPanel" Grid.Row="0" Orientation="Horizontal" Margin="5,0,5,0">
-            <Button Height="25" Padding="30 0 30 0" BorderThickness="0">Button 1</Button>
-            <Button Height="25" Padding="30 0 30 0" BorderThickness="0">Button 2</Button>
-            <Button Height="25" Padding="30 0 30 0" BorderThickness="0">Button 3</Button>
-            <Button Height="25" Padding="30 0 30 0" BorderThickness="0">Button 4</Button>
+            <Button Height="25" Padding="30 0 30 0" BorderThickness="0" Click="ValidateButton_Click">Validate</Button>
+            <Button Height="25" Padding="30 0 30 0" BorderThickness="0" Click="AutoValidateButton_Click">AutoValidate</Button>
         </StackPanel>
 
         <Grid Grid.Row="1" Margin="5,5,5,0">
@@ -108,6 +106,7 @@
                     Margin="0,10,0,0"
                     TextChanged="Editor_KeyDown"
                 />
+
         </Grid>
 
         <GridSplitter Grid.Row="2" Height="5" HorizontalAlignment="Stretch" Foreground="Transparent" BorderBrush="Transparent" >

@@ -81,7 +81,9 @@ namespace SQL_Parser.Grammar
                     return true;
                 }
                 else
-                {   //if(Name != null)
+                {
+                    Debug.WriteLine(token.Index + "\tin: <" + token.Name + ">\t expected: <" + Name + ">\t false");
+                    //if(Name != null)
                     //GrammarErrors.Add(new GrammarError(token, Name +"2"));
                     if (canBeEmpty)
                     {
@@ -140,7 +142,7 @@ namespace SQL_Parser.Grammar
                                     }
 
                                     if (tokensInLoop.Any() && word.Name != null)
-                                        GrammarErrors.Add(new GrammarError(tokensInLoop.First(), word.Name));
+                                        GrammarErrors.Add(new GrammarError(tokensInLoop.First(), word.Name + "1"));
                                     sequenceMatch = false;
                                     continueLoop = false;
                                     break;
@@ -175,10 +177,10 @@ namespace SQL_Parser.Grammar
                     {
                         if (word.IsMatch(ref tokensCopy, this) == false)
                         {
-                         
+
 
                             if (tokensCopy.Any() && word.Name != null)
-                                GrammarErrors.Add(new GrammarError(tokensCopy.First(), word.Name));
+                                GrammarErrors.Add(new GrammarError(tokensCopy.First(), word.Name + "2"));
                             sequenceMatch = false;
                             break;
                         }
@@ -238,10 +240,27 @@ namespace SQL_Parser.Grammar
                 new Word_select(),
                 new Word_space(),
                 new Word_SELECT_Columns(),
-
                 new Word_from(),
                 new Word_space(),
                 new Word_userMade(),
+                new Word_semicolon(),
+                new Word_space(),
+            });
+            Words.Add(new List<Word>()
+            {
+                new Word_select(),
+                new Word_space(),
+                new Word_SELECT_Columns(),
+                new Word_from(),
+                new Word_space(),
+                new Word_userMade(),
+                new Word_space(),
+
+                new Word_order_by(),
+                new Word_space(),
+                new Word_userMade(),
+                new Word_space(),
+                new Word_asc_desc(),
                 new Word_semicolon(),
                 new Word_space(),
             });
@@ -251,12 +270,32 @@ namespace SQL_Parser.Grammar
                 new Word_select(),
                 new Word_space(),
                 new Word_SELECT_Columns(),
-
                 new Word_from(),
                 new Word_space(),
                 new Word_userMade(),
                 new Word_space(),
                 new Word_SELECT_where(),
+                new Word_semicolon(),
+                new Word_space(),
+            });
+
+            Words.Add(new List<Word>()
+            {
+                new Word_select(),
+                new Word_space(),
+                new Word_SELECT_Columns(),
+                new Word_from(),
+                new Word_space(),
+                new Word_userMade(),
+                new Word_space(),
+                new Word_SELECT_where(),
+                new Word_space(),
+
+                new Word_order_by(),
+                new Word_space(),
+                new Word_userMade(),
+                new Word_space(),
+                new Word_asc_desc(),
                 new Word_semicolon(),
                 new Word_space(),
             });
@@ -310,17 +349,61 @@ namespace SQL_Parser.Grammar
         public Word_SELECT_where()
         {
             Words = new List<List<Word>>();
+
             Words.Add(new List<Word>()
             {
                 new Word_where(),
+
+                new Word_SELECT_where_loop(),
+
                 new Word_space(),
                 new Word_userMade(),
                 new Word_space(),
                 new Word_equals(),
                 new Word_space(),
+                new Word_quote(),
                 new Word_userMade(),
+                new Word_quote(),
+
             });
-          
+
+        }
+
+        class Word_SELECT_where_loop : Word
+        {
+
+            public Word_SELECT_where_loop()
+            {
+                Words = new List<List<Word>>();
+                Words.Add(new List<Word>()
+                {
+
+                    new Word_space(),
+                    new Word_userMade(),
+                    new Word_space(),
+                    new Word_equals(),
+                    new Word_space(),
+                    new Word_quote(),
+                    new Word_userMade(),
+                    new Word_quote(),
+                    new Word_space(),
+                    new Word_and_or(),
+
+                });
+                loop = true;
+                loopWithoutAnyWords = true;
+            }
+
+        }
+
+        class Word_and_or : Word
+        {
+            public Word_and_or()
+            {
+                Name = "and_or";
+            }
+
+
         }
 
     }
@@ -332,7 +415,20 @@ namespace SQL_Parser.Grammar
 
         public Word_DELETE()
         {
+            Words = new List<List<Word>>();
+            Words.Add(new List<Word>()
+            {
+                new Word_delete(),
+                new Word_space(),
 
+                new Word_from(),
+                new Word_space(),
+                new Word_userMade(),
+                new Word_space(),
+                new Word_SELECT_where(),
+                new Word_semicolon(),
+                new Word_space(),
+            });
         }
 
     }
@@ -347,9 +443,16 @@ namespace SQL_Parser.Grammar
         {
             Name = "select";
         }
-
-
     }
+
+    class Word_delete : Word
+    {
+        public Word_delete()
+        {
+            Name = "delete";
+        }
+    }
+
 
     class Word_from : Word
     {
@@ -365,6 +468,21 @@ namespace SQL_Parser.Grammar
             Name = "where";
         }
     }
+    class Word_order_by : Word
+    {
+        public Word_order_by()
+        {
+            Name = "order_by";
+        }
+    }
+    class Word_asc_desc : Word
+    {
+        public Word_asc_desc()
+        {
+            Name = "asc_desc";
+        }
+    }
+
     class Word_userMade : Word
     {
         public Word_userMade()
@@ -393,6 +511,13 @@ namespace SQL_Parser.Grammar
         public Word_equals()
         {
             Name = "equals";
+        }
+    }
+    class Word_quote : Word
+    {
+        public Word_quote()
+        {
+            Name = "quote";
         }
     }
     class Word_comma : Word
