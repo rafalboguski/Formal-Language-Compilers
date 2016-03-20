@@ -346,6 +346,55 @@ namespace SQL_Parser.Grammar
         }
     }
 
+    class Word_UPDATE_Columns : Word
+    {
+        public Word_UPDATE_Columns()
+        {
+            Words = new List<List<Word>>();
+            Words.Add(new List<Word>()
+            {
+                new Word_UPDATE_Columns_loop(),
+                new Word_userMade(),
+                new Word_space(),
+                new Word_equals(),
+                new Word_space(),
+                new Word_quote(),
+                new Word_userMade(),
+                new Word_quote(),
+
+
+                new Word_space(),
+
+            });
+        }
+
+        private class Word_UPDATE_Columns_loop : Word
+        {
+            public Word_UPDATE_Columns_loop()
+            {
+                Words = new List<List<Word>>();
+                Words.Add(new List<Word>()
+                {
+                    new Word_userMade(),
+                    new Word_space(),
+                    new Word_equals(),
+                    new Word_space(),
+                    new Word_quote(),
+                    new Word_userMade(),
+                    new Word_quote(),
+                    new Word_comma(),
+                    new Word_space(),
+                    // spaceornot
+                   
+                });
+
+                loop = true;
+                loopWithoutAnyWords = true;
+            }
+
+        }
+    }
+
     class Word_SELECT_where : Word
     {
 
@@ -446,7 +495,7 @@ namespace SQL_Parser.Grammar
 
                 new Word_set(),
                 new Word_space(),
-                new Word_SELECT_Columns(),
+                new Word_UPDATE_Columns(),
                 
                 new Word_SELECT_where(),
                 new Word_semicolon(),
