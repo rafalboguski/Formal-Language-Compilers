@@ -18,6 +18,8 @@ namespace SQL_Parser
             new Keyword("from", "(FROM|from)"),
             new Keyword("where", "(WHERE|where)"),
 
+
+            new Keyword("equals", @"(=)"),
             new Keyword("semicolon", "(;)"),
             new Keyword("comma", "(,)"),
             new Keyword("space", @"(\s+)")
@@ -56,6 +58,7 @@ namespace SQL_Parser
 
             Word.GrammarErrors.Clear();
             var state = new Word_STATEMENTS();
+            //bool dontMatter;
             var ddd = state.IsMatch(ref tokens);
 
             Debug.WriteLine("end " + ddd);

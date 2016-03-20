@@ -38,7 +38,7 @@ namespace SQL
             Editor.Focus();
 
             Editor.ShowLineNumbers = true;
-            Editor.Text = "select c1,c2,c3 from t_user where lol;select c4 fr0m t_user where lol;";
+            Editor.Text = "select c1,c2 from t_user where id = '34';";
 
             // load syntax theme
             using (var s = new StreamReader(@"C:\Users\user\Documents\GitHubVisualStudio\Formal-Language-Compilers\SQL\SQL\Resources\Colorizer.xshd"))
@@ -120,6 +120,11 @@ namespace SQL
             {
                 var index = error.Token.Index;
                 var length = error.Token.Length;
+                if(index + length > line.Offset +  line.Length)
+                {
+                    var dd = (index + length) - (line.Offset + line.Length);
+                    length -= dd;
+                }
 
                 if (index >= line.Offset && index < line.Offset + line.Length)
                     base.ChangeLinePart(index, index + length, (VisualLineElement element) => { Typeface tf = element.TextRunProperties.Typeface; element.BackgroundBrush = new SolidColorBrush(Colors.Red); });

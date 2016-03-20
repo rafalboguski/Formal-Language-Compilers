@@ -40,6 +40,7 @@ namespace SQL_Parser.Grammar
 
         public bool loop { get; set; }
         public bool loopWithoutAnyWords { get; set; }
+        public bool canBeEmpty { get; set; }
 
         public bool IsMatch(ref List<Token> tokens, Word parentWord = null)
         {
@@ -49,12 +50,16 @@ namespace SQL_Parser.Grammar
             {
                 if (tokens.Any() == false)
                 {
+                    if (canBeEmpty)
+                    {
+                        return true;
+                    }
                     return false;
                 }
 
                 var token = tokens.First();
 
-                if(token != null && token.Name=="fr0m")
+                if (token != null && token.Name == "fr0m")
                 {
 
                 }
@@ -78,6 +83,10 @@ namespace SQL_Parser.Grammar
                 else
                 {   //if(Name != null)
                     //GrammarErrors.Add(new GrammarError(token, Name +"2"));
+                    if (canBeEmpty)
+                    {
+                        return true;
+                    }
                     return false;
                 }
             }
@@ -114,7 +123,7 @@ namespace SQL_Parser.Grammar
                         foreach (var word in loopSexentce)
                         {
                             if (word.IsMatch(ref tokensInLoop, this) == false)
-                            {   
+                            {
                                 if (loops >= 1)
                                 {
                                     sequenceMatch = true;
@@ -145,9 +154,10 @@ namespace SQL_Parser.Grammar
                     {
                         if ((done % sequence.Count()) == 0)
                         {
-                            tokensCopy.RemoveRange(0, sequence.Count());
+                            if (tokensCopy.Count() >= sequence.Count())
+                                tokensCopy.RemoveRange(0, sequence.Count());
                             tokensCopy = tokensInLoop;
-                        } 
+                        }
                         else
                         {
                             var take = ((int)(((float)done) / ((float)sequence.Count()))) * sequence.Count();
@@ -165,6 +175,8 @@ namespace SQL_Parser.Grammar
                     {
                         if (word.IsMatch(ref tokensCopy, this) == false)
                         {
+                         
+
                             if (tokensCopy.Any() && word.Name != null)
                                 GrammarErrors.Add(new GrammarError(tokensCopy.First(), word.Name));
                             sequenceMatch = false;
@@ -178,6 +190,7 @@ namespace SQL_Parser.Grammar
 
                 if (sequenceMatch)
                 {
+                    GrammarErrors.Clear();
                     tokens = tokensCopy;
                     return true;
                 }
@@ -220,6 +233,18 @@ namespace SQL_Parser.Grammar
         public Word_SELECT()
         {
             Words = new List<List<Word>>();
+            Words.Add(new List<Word>()
+            {
+                new Word_select(),
+                new Word_space(),
+                new Word_SELECT_Columns(),
+
+                new Word_from(),
+                new Word_space(),
+                new Word_userMade(),
+                new Word_semicolon(),
+                new Word_space(),
+            });
 
             Words.Add(new List<Word>()
             {
@@ -231,10 +256,9 @@ namespace SQL_Parser.Grammar
                 new Word_space(),
                 new Word_userMade(),
                 new Word_space(),
-                new Word_where(),
+                new Word_SELECT_where(),
+                new Word_semicolon(),
                 new Word_space(),
-                new Word_userMade(),
-                new Word_semicolon()
             });
 
         }
@@ -279,6 +303,29 @@ namespace SQL_Parser.Grammar
 
         }
     }
+
+    class Word_SELECT_where : Word
+    {
+
+        public Word_SELECT_where()
+        {
+            Words = new List<List<Word>>();
+            Words.Add(new List<Word>()
+            {
+                new Word_where(),
+                new Word_space(),
+                new Word_userMade(),
+                new Word_space(),
+                new Word_equals(),
+                new Word_space(),
+                new Word_userMade(),
+            });
+          
+        }
+
+    }
+
+
 
     class Word_DELETE : Word
     {
@@ -339,6 +386,13 @@ namespace SQL_Parser.Grammar
         public Word_semicolon()
         {
             Name = "semicolon";
+        }
+    }
+    class Word_equals : Word
+    {
+        public Word_equals()
+        {
+            Name = "equals";
         }
     }
     class Word_comma : Word
