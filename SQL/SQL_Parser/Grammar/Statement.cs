@@ -54,6 +54,11 @@ namespace SQL_Parser.Grammar
 
                 var token = tokens.First();
 
+                if(token != null && token.Name=="fr0m")
+                {
+
+                }
+
                 // change to names digits and so on
                 if (token.userMade == true && Name == "userMade")
                 {
@@ -72,7 +77,7 @@ namespace SQL_Parser.Grammar
                 }
                 else
                 {   //if(Name != null)
-                    //GrammarErrors.Add(new GrammarError(token, Name));
+                    //GrammarErrors.Add(new GrammarError(token, Name +"2"));
                     return false;
                 }
             }
@@ -109,7 +114,7 @@ namespace SQL_Parser.Grammar
                         foreach (var word in loopSexentce)
                         {
                             if (word.IsMatch(ref tokensInLoop, this) == false)
-                            {    // tylko jak cala sekwencja jest poprawna powinien zwrocic tokeny
+                            {   
                                 if (loops >= 1)
                                 {
                                     sequenceMatch = true;
@@ -131,7 +136,6 @@ namespace SQL_Parser.Grammar
                                     continueLoop = false;
                                     break;
                                 }
-
                             }
                             done++;
                         }
@@ -139,15 +143,18 @@ namespace SQL_Parser.Grammar
                     }
                     if (sequenceMatch)
                     {
-                        tokens = tokensCopy;
                         if ((done % sequence.Count()) == 0)
-                            tokens = tokensInLoop;
+                        {
+                            tokensCopy.RemoveRange(0, sequence.Count());
+                            tokensCopy = tokensInLoop;
+                        } 
                         else
                         {
                             var take = ((int)(((float)done) / ((float)sequence.Count()))) * sequence.Count();
-                            tokens.RemoveRange(0, take);
+                            tokensCopy.RemoveRange(0, take);
                         }
-                        GrammarErrors.Clear();
+                        tokens = tokensCopy;
+                        //GrammarErrors.Clear();
 
                         return true;
                     }
