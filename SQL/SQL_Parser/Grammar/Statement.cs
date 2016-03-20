@@ -180,12 +180,13 @@ namespace SQL_Parser.Grammar
 
 
                             if (tokensCopy.Any() && word.Name != null)
-                                GrammarErrors.Add(new GrammarError(tokensCopy.First(), word.Name + "2"));
+                                GrammarErrors.Add(new GrammarError(tokensCopy.First(), word.Name));
                             sequenceMatch = false;
                             break;
                         }
                         else
                         {
+                            GrammarErrors.Clear();
                             sequenceMatch = true;
                         }
                     }
@@ -213,7 +214,7 @@ namespace SQL_Parser.Grammar
             Words.Add(new List<Word>() { new Word_STATEMENT() });
 
             loop = true;
-
+            this.loopWithoutAnyWords = true;
         }
 
     }
@@ -225,7 +226,9 @@ namespace SQL_Parser.Grammar
         {
             Words = new List<List<Word>>();
             Words.Add(new List<Word>() { new Word_SELECT() });
+            Words.Add(new List<Word>() { new Word_UPDATE() });
             Words.Add(new List<Word>() { new Word_DELETE() });
+
         }
 
     }
@@ -408,11 +411,8 @@ namespace SQL_Parser.Grammar
 
     }
 
-
-
     class Word_DELETE : Word
     {
-
         public Word_DELETE()
         {
             Words = new List<List<Word>>();
@@ -430,10 +430,30 @@ namespace SQL_Parser.Grammar
                 new Word_space(),
             });
         }
-
     }
 
+    class Word_UPDATE : Word
+    {
+        public Word_UPDATE()
+        {
+            Words = new List<List<Word>>();
+            Words.Add(new List<Word>()
+            {
+                new Word_update(),
+                new Word_space(),
+                new Word_userMade(),
+                new Word_space(),
 
+                new Word_set(),
+                new Word_space(),
+                new Word_SELECT_Columns(),
+                
+                new Word_SELECT_where(),
+                new Word_semicolon(),
+                new Word_space(),
+            });
+        }
+    }
 
     #region SHARED
 
@@ -452,7 +472,27 @@ namespace SQL_Parser.Grammar
             Name = "delete";
         }
     }
-
+    class Word_set : Word
+    {
+        public Word_set()
+        {
+            Name = "set";
+        }
+    }
+    class Word_values : Word
+    {
+        public Word_values()
+        {
+            Name = "values";
+        }
+    }
+    class Word_update : Word
+    {
+        public Word_update()
+        {
+            Name = "update";
+        }
+    }
 
     class Word_from : Word
     {

@@ -39,7 +39,7 @@ namespace SQL
             Editor.Focus();
 
             Editor.ShowLineNumbers = true;
-            Editor.Text = "select c1,c2 from t_user where id = '34';\ndelete from t_user where id = '34' and name = 'Tom'";
+            Editor.Text = "select c1,c2 from t_user;\nupdate dsfdsf set  ; ";
 
             // load syntax theme
             using (var s = new StreamReader(@"C:\Users\user\Documents\GitHubVisualStudio\Formal-Language-Compilers\SQL\SQL\Resources\Colorizer.xshd"))

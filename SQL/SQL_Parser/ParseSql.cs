@@ -16,6 +16,7 @@ namespace SQL_Parser
         {
             new Keyword("select", "(SELECT|select)"),
             new Keyword("from", "(FROM|from)"),
+            new Keyword("update", "(UPDATE|update)"),
             new Keyword("where", "(WHERE|where)"),
             new Keyword("order_by", @"(orderby|ORDERBY|ORDERby|orderBY)"),
 
@@ -23,6 +24,8 @@ namespace SQL_Parser
 
 
             new Keyword("and_or", @"(and|AND)"),
+            new Keyword("set", @"(set|SET)"),
+            new Keyword("values", @"(values|VALUES)"),
             new Keyword("asc_desc", @"(asc|ASC|desc|DESC)"),
 
 
