@@ -38,7 +38,7 @@ namespace SQL
             Editor.Focus();
 
             Editor.ShowLineNumbers = true;
-            Editor.Text = "select * from t_user where lol;";
+            Editor.Text = "select c1,c2,c3 from t_user where lol;";
 
             // load syntax theme
             using (var s = new StreamReader(@"C:\Users\user\Documents\GitHubVisualStudio\Formal-Language-Compilers\SQL\SQL\Resources\Colorizer.xshd"))
