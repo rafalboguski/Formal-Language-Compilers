@@ -227,6 +227,7 @@ namespace SQL_Parser.Grammar
             Words = new List<List<Word>>();
             Words.Add(new List<Word>() { new Word_SELECT() });
             Words.Add(new List<Word>() { new Word_UPDATE() });
+            Words.Add(new List<Word>() { new Word_INSERT() });
             Words.Add(new List<Word>() { new Word_DELETE() });
 
         }
@@ -496,13 +497,77 @@ namespace SQL_Parser.Grammar
                 new Word_set(),
                 new Word_space(),
                 new Word_UPDATE_Columns(),
-                
+
                 new Word_SELECT_where(),
                 new Word_semicolon(),
                 new Word_space(),
             });
         }
     }
+
+    class Word_INSERT : Word
+    {
+        public Word_INSERT()
+        {
+            Words = new List<List<Word>>();
+            Words.Add(new List<Word>()
+            {
+                new Word_insert(),
+                new Word_space(),
+                new Word_into(),
+                new Word_space(),
+                new Word_userMade(),
+                new Word_space(),
+                new Word_values(),
+                new Word_space(),
+                new Word_left_brace(),
+                new Word_INSERT_Values(),
+                new Word_right_brace(),
+                new Word_semicolon(),
+                new Word_space(),
+            });
+        }
+
+        class Word_INSERT_Values : Word
+        {
+            public Word_INSERT_Values()
+            {
+                Words = new List<List<Word>>();
+
+                Words.Add(new List<Word>()
+                {
+                    new Word_space(),
+                    new Word_INSERT_Values_loop(),
+                    new Word_quote(),
+                    new Word_userMade(),
+                    new Word_quote(),
+                    new Word_space(),
+                });
+            }
+
+            private class Word_INSERT_Values_loop : Word
+            {
+                public Word_INSERT_Values_loop()
+                {
+                    Words = new List<List<Word>>();
+                    Words.Add(new List<Word>()
+                    {
+                         new Word_quote(),
+                            new Word_userMade(),
+                            new Word_quote(),
+                        new Word_comma(),
+                        new Word_space()
+                    });
+                    loop = true;
+                    this.loopWithoutAnyWords = true;
+                }
+
+               
+
+            }
+        }
+    }
+
 
     #region SHARED
 
@@ -526,6 +591,20 @@ namespace SQL_Parser.Grammar
         public Word_set()
         {
             Name = "set";
+        }
+    }
+    class Word_insert : Word
+    {
+        public Word_insert()
+        {
+            Name = "insert";
+        }
+    }
+    class Word_into : Word
+    {
+        public Word_into()
+        {
+            Name = "into";
         }
     }
     class Word_values : Word
@@ -614,6 +693,20 @@ namespace SQL_Parser.Grammar
         public Word_comma()
         {
             Name = "comma";
+        }
+    }
+    class Word_left_brace : Word
+    {
+        public Word_left_brace()
+        {
+            Name = "lbrace";
+        }
+    }
+    class Word_right_brace : Word
+    {
+        public Word_right_brace()
+        {
+            Name = "rbrace";
         }
     }
 

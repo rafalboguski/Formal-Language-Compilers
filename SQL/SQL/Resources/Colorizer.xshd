@@ -128,6 +128,10 @@
       <Word>when</Word>
       <Word>where</Word>
       <Word>with</Word>
+      <Word>equals</Word>
+      <Word>set</Word>
+      <Word>SET</Word>
+      <Word>orderby</Word>
     </Keywords>
 
     <Keywords color="Keywords">

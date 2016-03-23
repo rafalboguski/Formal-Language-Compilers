@@ -21,11 +21,12 @@ namespace SQL_Parser
             new Keyword("order_by", @"(orderby|ORDERBY|ORDERby|orderBY)"),
 
             new Keyword("delete", "(DELETE|delete)"),
-
+            new Keyword("insert", "(INSERT|insert)"),
+            new Keyword("into", "(INTO|into)"),
+            new Keyword("values", "(VALUES|values)"),
 
             new Keyword("and_or", @"(and|AND)"),
             new Keyword("set", @"(set|SET)"),
-            new Keyword("values", @"(values|VALUES)"),
             new Keyword("asc_desc", @"(asc|ASC|desc|DESC)"),
 
 
@@ -33,7 +34,9 @@ namespace SQL_Parser
             new Keyword("quote", @"(')"),
             new Keyword("semicolon", "(;)"),
             new Keyword("comma", "(,)"),
-            new Keyword("space", @"(\s+)")
+            new Keyword("space", @"(\s+)"),
+            new Keyword("lbrace", @"(\()"),
+            new Keyword("rbrace", @"(\))")
 
         };
 
