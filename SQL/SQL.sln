@@ -1,11 +1,13 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 14
-VisualStudioVersion = 14.0.23107.0
+VisualStudioVersion = 14.0.24720.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SQL", "SQL\SQL.csproj", "{31CDB9C3-E942-4BB0-BF4D-335BAD9C1CEF}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SQL_Parser", "SQL_Parser\SQL_Parser.csproj", "{BE42F9AD-2716-48DA-AA2A-075BCBBFF5BE}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Regex DAS", "Regex DAS\Regex DAS.csproj", "{5F19298E-FB68-4013-BB49-DA19E2CB10B5}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -21,6 +23,10 @@ Global
 		{BE42F9AD-2716-48DA-AA2A-075BCBBFF5BE}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{BE42F9AD-2716-48DA-AA2A-075BCBBFF5BE}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{BE42F9AD-2716-48DA-AA2A-075BCBBFF5BE}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5F19298E-FB68-4013-BB49-DA19E2CB10B5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5F19298E-FB68-4013-BB49-DA19E2CB10B5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5F19298E-FB68-4013-BB49-DA19E2CB10B5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5F19298E-FB68-4013-BB49-DA19E2CB10B5}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
