@@ -11,14 +11,14 @@ namespace Regex_DAS
     class DAS
     {
         private State CurrentState;
-        private List<State> StatesTable;
+        private List<State> States;
         private List<string> Keys;
-        private string temporaryFoundElement = "";
+        private string temporaryFoundElement;
         private List<string> FoundElements;
 
-        public DAS(List<string> keys = null, List<State> moveTable = null)
+        public DAS(List<string> keys = null, List<State> states = null)
         {
-            StatesTable = moveTable == null ? new List<State>()
+            States = states == null ? new List<State>()
             {
                 new State(0,  new Dictionary<string, int>(){{ "[A-Z]", 1 } }),
                 new State(1,  new Dictionary<string, int>(){{ "[A-Z]", 2 } }),
@@ -33,16 +33,11 @@ namespace Regex_DAS
                 new State(10, new Dictionary<string, int>(){{ "[0-9]", 12} }),
                 new State(11, new Dictionary<string, int>(){{ "[A-Z]", 12} }),
                 new State(12, new Dictionary<string, int>(){}),
-            } : moveTable;
+            } : states;
 
-            Keys = keys == null ? new List<string>()
-            {
-                "[A-Z]",
-                "[0-9]",
-                " "
-            } : keys;
+            Keys = keys == null ? new List<string>() { "[A-Z]", "[0-9]", " " } : keys;
 
-            CurrentState = StatesTable.First();
+            CurrentState = States.First();
             FoundElements = new List<string>();
         }
 
@@ -50,26 +45,26 @@ namespace Regex_DAS
         {
             foreach (var key in input)
             {
-                ChangeState(key);
+                ChangeState(key.ToString());
             }
             return FoundElements;
         }
 
-        private void ChangeState(char inKey)
+        private void ChangeState(string inKey)
         {
-            if (CurrentState.Number == StatesTable.First().Number)
+            if (CurrentState.Number == States.First().Number)
                 temporaryFoundElement = "";
 
             foreach (var key in Keys)
             {
-                if (Regex.IsMatch(inKey.ToString(), $@"^{key}") && CurrentState.MovesTable.ContainsKey(key.ToString()))
+                if (Regex.IsMatch(inKey, $@"^{key}") && CurrentState.Moves.ContainsKey(key))
                 {
-                    CurrentState = StatesTable.ElementAt(CurrentState.MovesTable[key]);
+                    CurrentState = States.ElementAt(CurrentState.Moves[key]);
                     temporaryFoundElement += inKey;
-                    if (CurrentState.Number == StatesTable.Last().Number)
+                    if (CurrentState.Number == States.Last().Number)
                     {
                         FoundElements.Add(temporaryFoundElement);
-                        CurrentState = StatesTable.First();
+                        CurrentState = States.First();
                     }
                     break;
                 }
@@ -81,12 +76,12 @@ namespace Regex_DAS
     class State
     {
         public int Number;
-        public Dictionary<string, int> MovesTable;
+        public Dictionary<string, int> Moves;
 
         public State(int stateNumber, Dictionary<string, int> movesTable)
         {
             Number = stateNumber;
-            MovesTable = movesTable;
+            Moves = movesTable;
         }
     }
 }
