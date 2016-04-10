@@ -11,17 +11,21 @@ namespace Regex_DAS
     {
         static void Main(string[] args)
         {
-            var input = "kupiłem tablice AA 34334 i BB32434";
-            var replaceString = "<plate number>";
             var licensePlateRegex = new DAS();
+            var replaceString = "<TABLICA REJ>";
+            var input = "Pan Jan zmienił tablicę rejestracyjną XY 12345 na YX67893 oraz XY 1234A,\n" +
+                        "XY 123AC, XY 1A234, XY 1AC23";
 
-            WriteLine($"Replace license plate number with string \"{replaceString}\"\n");
-            WriteLine($"INPUT:\n\n{input}\n\n");
+            WriteLine($"INPUT---------------------------------------\n\n{input}\n\n");
 
+            var foundElements = licensePlateRegex.Start(input);
 
+            WriteLine($"OUTPUT--------------------------------------\n");
+            var output = input;
+            foreach (var x in foundElements)
+                output = output.Replace(x, replaceString);
 
-
-            WriteLine($"OUTPUT:\n\n");
+            WriteLine(output);
 
             ReadLine();
         }
