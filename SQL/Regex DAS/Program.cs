@@ -13,7 +13,7 @@ namespace Regex_DAS
         {
             var licensePlateRegex = new DAS();
             var replaceString = "<TABLICA REJ>";
-            var input = "Pan Jan zmienił tablicę rejestracyjną XY 12345 na YX67893 oraz XY 1234A,\n" +
+            var input = "Pan Jan ma tablice rejestracyjne o numerach YX 67893, YX 67893 oraz XY 1234A,\n" +
                         "XY 123AC, XY 1A234, XY 1AC23";
 
             WriteLine($"INPUT---------------------------------------\n\n{input}\n\n");

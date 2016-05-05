@@ -99,7 +99,7 @@
             <avalonEdit:TextEditor
                     xmlns:avalonEdit="http://icsharpcode.net/sharpdevelop/avalonedit"
                     Name="Editor"
-                    FontFamily="Source Code Pro" WordWrap="True"
+                    FontFamily="Consolas" WordWrap="True"
                     SyntaxHighlighting="XML"
                     FontSize="14pt"
                     Foreground="#C8C8C8"
@@ -123,7 +123,7 @@
             <avalonEdit:TextEditor
                     xmlns:avalonEdit="http://icsharpcode.net/sharpdevelop/avalonedit"
                     Name="Console"
-                    FontFamily="Source Code Pro" WordWrap="True"
+                    FontFamily="Consolas" WordWrap="True"
                     SyntaxHighlighting="XML"
                     FontSize="14pt"
                     Foreground="#C8C8C8"

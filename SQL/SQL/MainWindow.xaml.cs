@@ -42,7 +42,7 @@ namespace SQL
             Editor.Text = "select c1,c2 from t_user;\nupdate client set  name = 'Jon' where surname = 'Doe';  ";
 
             // load syntax theme
-            using (var s = new StreamReader(@"C:\Users\user\Documents\GitHubVisualStudio\Formal-Language-Compilers\SQL\SQL\Resources\Colorizer.xshd"))
+            using (var s = new StreamReader(@"C:\Users\rbog\Desktop\Komplatory\Formal-Languages-Compiler\SQL\SQL\Resources\Colorizer.xshd"))
             {
                 var line = s.ReadLine();
                 using (XmlTextReader reader = new XmlTextReader(s))
@@ -53,7 +53,7 @@ namespace SQL
 
             Console.ShowLineNumbers = true;
             // load syntax theme
-            using (var s = new StreamReader(@"C:\Users\user\Documents\GitHubVisualStudio\Formal-Language-Compilers\SQL\SQL\Resources\Colorizer.xshd"))
+            using (var s = new StreamReader(@"C:\Users\rbog\Desktop\Komplatory\Formal-Languages-Compiler\SQL\SQL\Resources\Colorizer.xshd"))
             {
                 var line = s.ReadLine();
                 using (XmlTextReader reader = new XmlTextReader(s))
