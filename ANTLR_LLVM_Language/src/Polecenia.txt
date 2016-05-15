@@ -1,0 +1,16 @@
+
+# generate LLVM IR
+antlr4 RB.g4
+javac *.java
+java Main input.txt > rb.ll
+
+# generate byte-code
+
+llvm-as rb.ll
+
+# run code
+lli rb.bc
+
+
+# tranlate ANSI-C to llvm  
+clang -emit-llvm -S test.c

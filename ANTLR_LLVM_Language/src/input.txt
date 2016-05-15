@@ -1,7 +1,12 @@
 
 
- int a = 1;
- int b = 2;
- float c = 3,45;
+int a = 5;
+int b = 10;
+
+double ulamek = 0.93;
+
+
+print(a);
+print(b);
 
 

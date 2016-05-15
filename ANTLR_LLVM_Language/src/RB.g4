@@ -12,23 +12,34 @@ statements
     ;
 
 stat
-    : declare_variable
+    : declare_variable 
+	| print_statement
     ;
 
 declare_variable
-    :   TYPE_INT variable_name EQUALS value_int END
-    |   TYPE_FLOAT variable_name EQUALS value_float END
+    :   declare_variable_int
+    |   declare_variable_double
     ;
-
+	
+declare_variable_int
+	: 	TYPE_INT variable_name EQUALS value_int END
+	;
+declare_variable_double
+	:	TYPE_double variable_name EQUALS value_double END
+	;
+	
+print_statement
+	: 'print(' variable_name ')' END #print
+	;
 
 variable_name:  NAME;
 
 value_int: DIGIT;
-value_float: DIGIT COMMA DIGIT;
+value_double: DIGIT '.' DIGIT;
 
 
 TYPE_INT:       'int';
-TYPE_FLOAT:     'float';
+TYPE_double:     'double';
 NAME  :         ('a'..'z'|'A'..'Z')+ ;
 DIGIT :         '0'..'9'+ ;
 EQUALS:         '=';
