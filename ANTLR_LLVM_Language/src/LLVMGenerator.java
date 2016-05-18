@@ -17,13 +17,13 @@ class LLVMGenerator{
 		//System.out.print("DEBUG print"+var.value);
 		
 		if(var.type == "double")
-			header_text += "@.str." + str_i + " = private unnamed_addr constant [3 x i8] c\"%f\\00\"\n";		
+			header_text += "@.str." + str_i + " = private unnamed_addr constant [4 x i8] c\"%f\\0A\\00\"\n";		
 		else
-			header_text += "@.str." + str_i + " = private unnamed_addr constant [3 x i8] c\"%d\\00\"\n";		
+			header_text += "@.str." + str_i + " = private unnamed_addr constant [4 x i8] c\"%d\\0A\\00\"\n";		
 		
 		main_text += "\t" + "%print" + str_i + " = load " + var.type + ", " + var.type + "* %" + var.name;
 		main_text += "\n";
-		main_text += "\t" + "call i32 (i8*, ...) @printf(i8* getelementptr inbounds ([3 x i8], [3 x i8]* @.str." + str_i + ", i32 0, i32 0), " + var.type + " %print" + str_i + ")";
+		main_text += "\t" + "call i32 (i8*, ...) @printf(i8* getelementptr inbounds ([4 x i8], [4 x i8]* @.str." + str_i + ", i32 0, i32 0), " + var.type + " %print" + str_i + ")";
 		main_text += "\n";
 		
 		str_i++;
