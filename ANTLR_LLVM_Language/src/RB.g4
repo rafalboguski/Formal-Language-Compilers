@@ -59,7 +59,7 @@ read_statement
 	
 variable_name:  NAME;
 
-value_int: DIGIT;
+value_int: DIGIT| '-' DIGIT;
 value_double: DIGIT '.' DIGIT;
 
 

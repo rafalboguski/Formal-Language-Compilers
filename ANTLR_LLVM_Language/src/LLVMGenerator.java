@@ -29,7 +29,12 @@ class LLVMGenerator{
 		
 		main_text += "\t%r." + str_i     + " = load " + var1.type + ", " + var1.type + "* %" + var1.name + "\n";
 		main_text += "\t%r." + (str_i+1) + " = load " + var2.type + ", " + var2.type + "* %" + var2.name + "\n";
-		main_text += "\t%r." + (str_i+2) + " = add nsw i32 %r." + str_i + ", %r." + (str_i+1) + "\n";
+		
+		if(var1.type == "i32" && var2.type == "i32")
+			main_text += "\t%r." + (str_i+2) + " = add nsw " + var1.type + " %r." + str_i + ", %r." + (str_i+1) + "\n";
+		
+		if(var1.type == "double" && var2.type == "double")
+			main_text += "\t%r." + (str_i+2) + " = fadd " + var1.type + " %r." + str_i + ", %r." + (str_i+1) + "\n";
 		
 		str_i += 3;
 		

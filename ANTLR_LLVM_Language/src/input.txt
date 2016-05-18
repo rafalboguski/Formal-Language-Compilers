@@ -1,13 +1,12 @@
 
 
 
-int a = 5;
-int b = 6;
+double a = 5.0;
+double b = 6.0;
 
-int wyn;
+double wyn;
 
 wyn = a + b;
 
-wyn = wyn + a;
 
 print(wyn);
