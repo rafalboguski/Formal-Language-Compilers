@@ -41,7 +41,7 @@ public class LLVMactions extends RBBaseListener {
 			Variable var = new Variable(
 				ctx.declare_variable_int().variable_name().getText(),
 				"i32",
-				ctx.declare_variable_int().value_int().getText()
+				(ctx.declare_variable_int().value_int() != null) ? ctx.declare_variable_int().value_int().getText() : null
 			);
 			memory.put(var.name, var);
 			LLVMGenerator.declare(var);
@@ -51,7 +51,7 @@ public class LLVMactions extends RBBaseListener {
 			Variable var = new Variable(
 				ctx.declare_variable_double().variable_name().getText(),
 				"double",
-				ctx.declare_variable_double().value_double().getText()
+				(ctx.declare_variable_double().value_double() != null) ? ctx.declare_variable_double().value_double().getText() : null
 			);
 			memory.put(var.name, var);
 			LLVMGenerator.declare(var);
@@ -67,8 +67,13 @@ public class LLVMactions extends RBBaseListener {
 		Variable var = memory.get(ctx.variable_name().getText());
 		LLVMGenerator.print(var);
 		//System.out.println(ctx.variable_name().getText());
-		
-		
+    } 
+	
+	@Override
+    public void exitRead(RBParser.ReadContext ctx) { 
+		Variable var = memory.get(ctx.variable_name().getText());
+		LLVMGenerator.read(var);
+		//System.out.println(ctx.variable_name().getText());
     } 
 
 }

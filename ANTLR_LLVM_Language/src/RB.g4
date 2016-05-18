@@ -14,6 +14,7 @@ statements
 stat
     : declare_variable 
 	| print_statement
+	| read_statement
     ;
 
 declare_variable
@@ -22,16 +23,23 @@ declare_variable
     ;
 	
 declare_variable_int
-	: 	TYPE_INT variable_name EQUALS value_int END
+	: 	TYPE_INT variable_name END
+	| 	TYPE_INT variable_name EQUALS value_int END
 	;
 declare_variable_double
-	:	TYPE_double variable_name EQUALS value_double END
+	:	TYPE_double variable_name END
+	|	TYPE_double variable_name EQUALS value_double END
 	;
 	
 print_statement
 	: 'print(' variable_name ')' END #print
 	;
 
+read_statement
+	: 'read(' variable_name ')' END #read
+	;
+	
+	
 variable_name:  NAME;
 
 value_int: DIGIT;

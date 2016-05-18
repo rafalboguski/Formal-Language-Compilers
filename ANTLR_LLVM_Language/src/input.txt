@@ -1,12 +1,16 @@
 
 
 int a = 5;
-int b = 10;
+int b;
+double ulamek;
 
-double ulamek = 0.93;
-
+read(b);
+read(ulamek);
+read(ulamek);
 
 print(a);
 print(b);
-
+print(ulamek);
+print(ulamek);
+print(ulamek);
 
