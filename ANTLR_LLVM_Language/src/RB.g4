@@ -15,6 +15,7 @@ stat
     : declare_variable 
 	| print_statement
 	| read_statement
+	| assign_statement
     ;
 
 declare_variable
@@ -29,6 +30,22 @@ declare_variable_int
 declare_variable_double
 	:	TYPE_double variable_name END
 	|	TYPE_double variable_name EQUALS value_double END
+	;
+	
+assign_statement
+	: variable_name '=' expr END	#assign
+	;
+	
+expr  
+	 : add           
+	 ;
+	 
+add : expr1 '+' expr1 
+	;
+	 
+expr1 : variable_name
+	| value_double
+	| value_int
 	;
 	
 print_statement

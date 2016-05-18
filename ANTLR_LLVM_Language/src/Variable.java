@@ -4,6 +4,12 @@ public class Variable{
 		public String type;
 		public String value;
 		
+		public Variable(String name, String t){
+			this.name = name;
+			this.type = t;
+			
+		}
+		
 		public Variable(String name, String t, String v){
 			this.name = name;
 			this.type = t;

@@ -15,9 +15,25 @@ class LLVMGenerator{
 		}
 	}
 	
-	static void assign(){
+	static void assign(Variable var, String sourceVar, String value){
 		
+		//store i32 %2, i32* %b, align 4
+		if(sourceVar != null)
+			main_text += "\t" + "store " + var.type + " "+ sourceVar + ", "+var.type+"* %"+ var.name + "\n";
+	}
+	
+	static String add(Variable var1, Variable var2){
 		
+		//%1 = load i32, i32* %a, align 4
+		//%2 = add nsw i32 %1, 4
+		
+		main_text += "\t%r." + str_i     + " = load " + var1.type + ", " + var1.type + "* %" + var1.name + "\n";
+		main_text += "\t%r." + (str_i+1) + " = load " + var2.type + ", " + var2.type + "* %" + var2.name + "\n";
+		main_text += "\t%r." + (str_i+2) + " = add nsw i32 %r." + str_i + ", %r." + (str_i+1) + "\n";
+		
+		str_i += 3;
+		
+		return "%r." + (str_i-1);
 	}
 	
 	static void read(Variable var) {

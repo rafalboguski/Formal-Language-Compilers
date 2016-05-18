@@ -1,16 +1,13 @@
 
 
+
 int a = 5;
-int b;
-double ulamek;
+int b = 6;
 
-read(b);
-read(ulamek);
-read(ulamek);
+int wyn;
 
-print(a);
-print(b);
-print(ulamek);
-print(ulamek);
-print(ulamek);
+wyn = a + b;
 
+wyn = wyn + a;
+
+print(wyn);
