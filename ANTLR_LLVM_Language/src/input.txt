@@ -1,14 +1,20 @@
 
 
 
-double a = 5.0;
-double b = 6.0;
+int a = 5;
 
-double dod;
-dod = a + b;
 
-double mno;
-mno = a * b;
+int b;
 
-print(dod);
-print(mno);
+b = a;
+
+int wyn;
+
+wyn = a + b;
+
+
+wyn = 322;
+
+print(b);
+
+print(wyn);

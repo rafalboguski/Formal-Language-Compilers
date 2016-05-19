@@ -8,6 +8,8 @@ public class Main {
     public static void main(String[] args) throws Exception {
         ANTLRFileStream input = new ANTLRFileStream(args[0]);
 
+		
+		
         RBLexer lexer = new RBLexer(input);
 
         CommonTokenStream tokens = new CommonTokenStream(lexer);

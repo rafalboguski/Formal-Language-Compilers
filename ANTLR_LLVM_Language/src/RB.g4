@@ -33,18 +33,32 @@ declare_variable_double
 	;
 	
 assign_statement
-	: variable_name '=' expr END	#assign
+	: variable_name '=' (CAST_INT|CAST_DOUBLE)? expr END	#assign
 	;
+
+CAST_INT:'(int)';
+CAST_DOUBLE:'(double)';	
+	
 	
 expr  
 	: add
 	| mul
+	| sub
+	| div
+	| value_double
+	| value_int
+	| variable_name
 	;
 	 
 add : expr1 '+' expr1 
 	;
 	
 mul : expr1 '*' expr1 
+	; 
+sub : expr1 '-' expr1 
+	; 
+	
+div : expr1 '/' expr1 
 	; 
 	 
 expr1 : variable_name

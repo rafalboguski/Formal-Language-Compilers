@@ -3,7 +3,7 @@ class LLVMGenerator{
    
 	static String header_text = "";
 	static String main_text = "";
-	static int str_i = 0;
+	static int str_i = 1;
 
 	static void declare(Variable var){
 		main_text += "\t%" + var.name + " = alloca " + var.type;
@@ -15,30 +15,45 @@ class LLVMGenerator{
 		}
 	}
 	
-	static void assign(Variable var, String sourceVar, String value){
+	static void assign(Variable var, Variable sourceVar, Variable value){
 		
 		//store i32 %2, i32* %b, align 4
-		if(sourceVar != null)
-			main_text += "\t" + "store " + var.type + " "+ sourceVar + ", "+var.type+"* %"+ var.name + "\n";
+		if(value == null){
+			if(!sourceVar.name.contains("r.")){
+				main_text += "\t" +  "%"+str_i+" = load "+sourceVar.type+", "+sourceVar.type+"* %"+ sourceVar.name + "\n";
+				main_text += "\t" + "store " + sourceVar.type + " %"+ str_i + ", "+var.type+"* %"+ var.name + "\n";
+			}
+			else{
+				main_text += "\t" + "store " + sourceVar.type + " %"+ sourceVar.name + ", "+var.type+"* %"+ var.name + "\n";
+			}
+		}
+		else{
+			main_text += "\t" + "store " + value.type + " "+ value.value + ", "+var.type+"* %"+ var.name + "\n";
+		}
+		str_i ++;
 	}
 	
-	static String math(Variable var1, Variable var2, String operation){
+	static Variable math(Variable var1, Variable var2, String operation){
 		
 		//%1 = load i32, i32* %a, align 4
 		//%2 = add nsw i32 %1, 4
+		String type = null;
 		
 		main_text += "\t%r." + str_i     + " = load " + var1.type + ", " + var1.type + "* %" + var1.name + "\n";
 		main_text += "\t%r." + (str_i+1) + " = load " + var2.type + ", " + var2.type + "* %" + var2.name + "\n";
 		
-		if(var1.type == "i32" && var2.type == "i32")
+		if(var1.type == "i32" && var2.type == "i32"){
 			main_text += "\t%r." + (str_i+2) + " = "+operation+" nsw " + var1.type + " %r." + str_i + ", %r." + (str_i+1) + "\n";
-		
-		if(var1.type == "double" && var2.type == "double")
+			type = "i32";
+		}
+		if(var1.type == "double" && var2.type == "double"){
 			main_text += "\t%r." + (str_i+2) + " = f"+operation+" " + var1.type + " %r." + str_i + ", %r." + (str_i+1) + "\n";
+			type = "double";
+		}
 		
 		str_i += 3;
 		
-		return "%r." + (str_i-1);
+		return new Variable("r." + (str_i-1), type);
 	}
 	
 	static void read(Variable var) {

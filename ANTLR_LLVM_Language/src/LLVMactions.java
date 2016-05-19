@@ -16,7 +16,8 @@ public class LLVMactions extends RBBaseListener {
 		
 		Variable var1 = null;
 		Variable var2 = null;
-		String resultName = null;
+		Variable resultName = null;
+		Variable value = null;
 		
 		if(ctx.expr().add() != null){
 			
@@ -38,12 +39,46 @@ public class LLVMactions extends RBBaseListener {
 				var2 = memory.get(ctx.expr().mul().expr1(1).variable_name().getText());
 			}
 			resultName = LLVMGenerator.math(var1, var2,"mul");
-		}		
+		}	
+
+		if(ctx.expr().sub() != null){
+			
+			if(ctx.expr().sub().expr1(0).variable_name()!=null){
+				var1 = memory.get(ctx.expr().sub().expr1(0).variable_name().getText());
+			}
+			if(ctx.expr().sub().expr1(1).variable_name()!=null){
+				var2 = memory.get(ctx.expr().sub().expr1(1).variable_name().getText());
+			}
+			resultName = LLVMGenerator.math(var1, var2,"sub");
+		}	
+
+		if(ctx.expr().div() != null){
+			
+			if(ctx.expr().div().expr1(0).variable_name()!=null){
+				var1 = memory.get(ctx.expr().div().expr1(0).variable_name().getText());
+			}
+			if(ctx.expr().div().expr1(1).variable_name()!=null){
+				var2 = memory.get(ctx.expr().div().expr1(1).variable_name().getText());
+			}
+			resultName = LLVMGenerator.math(var1, var2,"div");
+		}	
 		//System.out.println(var1);
 		//System.out.println(var2);
 		
+		if(ctx.expr().variable_name()!= null){
+			resultName = memory.get(ctx.expr().variable_name().getText());
+		}
+		
+		if(ctx.expr().value_double()!= null){
+			value = new Variable (null,"double",ctx.expr().value_double().getText());
+		}
+		
+		if(ctx.expr().value_int()!= null){
+			value = new Variable (null,"i32",ctx.expr().value_int().getText());
+		}
+		
 		Variable res = memory.get(ctx.variable_name().getText());
-		LLVMGenerator.assign(res, resultName,null);
+		LLVMGenerator.assign(res, resultName,value);
 	
     }
 	
