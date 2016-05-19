@@ -4,9 +4,11 @@
 double a = 5.0;
 double b = 6.0;
 
-double wyn;
+double dod;
+dod = a + b;
 
-wyn = a + b;
+double mno;
+mno = a * b;
 
-
-print(wyn);
+print(dod);
+print(mno);

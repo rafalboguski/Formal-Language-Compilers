@@ -13,23 +13,38 @@ public class LLVMactions extends RBBaseListener {
     public void exitAssign(RBParser.AssignContext ctx) { 
 	//System.out.println("DEBUG exitAssign");
 		
+		
+		Variable var1 = null;
+		Variable var2 = null;
+		String resultName = null;
+		
 		if(ctx.expr().add() != null){
-			Variable var1 = null;
-			Variable var2 = null;
+			
 			if(ctx.expr().add().expr1(0).variable_name()!=null){
 				var1 = memory.get(ctx.expr().add().expr1(0).variable_name().getText());
 			}
-			
 			if(ctx.expr().add().expr1(1).variable_name()!=null){
 				var2 = memory.get(ctx.expr().add().expr1(1).variable_name().getText());
 			}
-			//System.out.println(var1);
-			//System.out.println(var2);
-			String resultName = LLVMGenerator.add(var1, var2);
-			
-			Variable res = memory.get(ctx.variable_name().getText());
-			LLVMGenerator.assign(res, resultName,null);
+			resultName = LLVMGenerator.math(var1, var2,"add");
 		}
+		
+		if(ctx.expr().mul() != null){
+			
+			if(ctx.expr().mul().expr1(0).variable_name()!=null){
+				var1 = memory.get(ctx.expr().mul().expr1(0).variable_name().getText());
+			}
+			if(ctx.expr().mul().expr1(1).variable_name()!=null){
+				var2 = memory.get(ctx.expr().mul().expr1(1).variable_name().getText());
+			}
+			resultName = LLVMGenerator.math(var1, var2,"mul");
+		}		
+		//System.out.println(var1);
+		//System.out.println(var2);
+		
+		Variable res = memory.get(ctx.variable_name().getText());
+		LLVMGenerator.assign(res, resultName,null);
+	
     }
 	
 

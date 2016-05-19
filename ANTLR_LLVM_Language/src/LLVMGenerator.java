@@ -22,7 +22,7 @@ class LLVMGenerator{
 			main_text += "\t" + "store " + var.type + " "+ sourceVar + ", "+var.type+"* %"+ var.name + "\n";
 	}
 	
-	static String add(Variable var1, Variable var2){
+	static String math(Variable var1, Variable var2, String operation){
 		
 		//%1 = load i32, i32* %a, align 4
 		//%2 = add nsw i32 %1, 4
@@ -31,10 +31,10 @@ class LLVMGenerator{
 		main_text += "\t%r." + (str_i+1) + " = load " + var2.type + ", " + var2.type + "* %" + var2.name + "\n";
 		
 		if(var1.type == "i32" && var2.type == "i32")
-			main_text += "\t%r." + (str_i+2) + " = add nsw " + var1.type + " %r." + str_i + ", %r." + (str_i+1) + "\n";
+			main_text += "\t%r." + (str_i+2) + " = "+operation+" nsw " + var1.type + " %r." + str_i + ", %r." + (str_i+1) + "\n";
 		
 		if(var1.type == "double" && var2.type == "double")
-			main_text += "\t%r." + (str_i+2) + " = fadd " + var1.type + " %r." + str_i + ", %r." + (str_i+1) + "\n";
+			main_text += "\t%r." + (str_i+2) + " = f"+operation+" " + var1.type + " %r." + str_i + ", %r." + (str_i+1) + "\n";
 		
 		str_i += 3;
 		

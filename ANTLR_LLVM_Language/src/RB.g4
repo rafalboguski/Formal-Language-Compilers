@@ -37,11 +37,15 @@ assign_statement
 	;
 	
 expr  
-	 : add           
-	 ;
+	: add
+	| mul
+	;
 	 
 add : expr1 '+' expr1 
 	;
+	
+mul : expr1 '*' expr1 
+	; 
 	 
 expr1 : variable_name
 	| value_double
@@ -60,7 +64,7 @@ read_statement
 variable_name:  NAME;
 
 value_int: DIGIT| '-' DIGIT;
-value_double: DIGIT '.' DIGIT;
+value_double: DIGIT '.' DIGIT | '-' + DIGIT '.' DIGIT;
 
 
 TYPE_INT:       'int';
