@@ -1,20 +1,17 @@
 
+int a = 3;
+int b = 3;
+
+if ( a == b ) {
+	print(a);
+}
+
+if ( a <= b ) {
+	print(a);
+}
+
+if ( a > b ) {
+	print(b);
+}
 
 
-int a = 5;
-
-
-int b;
-
-b = a;
-
-int wyn;
-
-wyn = a + b;
-
-
-wyn = 322;
-
-print(b);
-
-print(wyn);

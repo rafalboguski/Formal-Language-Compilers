@@ -16,7 +16,16 @@ stat
 	| print_statement
 	| read_statement
 	| assign_statement
+	| if_statement
     ;
+	
+if_statement: if_declare if_body                           
+			;
+if_declare: 'if' '(' variable_name relation variable_name ')' #ifdeclare
+		  ;
+if_body: '{' statements '}'                                   #ifbody
+	   ;
+relation: ('=='|'<'|'<='|'>'|'>=');
 
 declare_variable
     :   declare_variable_int
@@ -25,11 +34,11 @@ declare_variable
 	
 declare_variable_int
 	: 	TYPE_INT variable_name END
-	| 	TYPE_INT variable_name EQUALS value_int END
+	| 	TYPE_INT variable_name EQUALS (CAST_INT|CAST_DOUBLE)? (value_int|value_double) END
 	;
 declare_variable_double
 	:	TYPE_double variable_name END
-	|	TYPE_double variable_name EQUALS value_double END
+	|	TYPE_double variable_name EQUALS (CAST_INT|CAST_DOUBLE)? (value_int|value_double) END
 	;
 	
 assign_statement

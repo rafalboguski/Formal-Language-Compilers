@@ -2,14 +2,43 @@
 class LLVMGenerator{
    
 	static String header_text = "";
-	static String main_text = "";
+	public static String main_text = "";
 	static int str_i = 1;
-
-	static void declare(Variable var){
+	public static int label_i = 1;
+	
+	static void declare(Variable var, String cast){
 		main_text += "\t%" + var.name + " = alloca " + var.type;
 		main_text += "\n";
 		
 		if(var.value != null) {
+			
+			if(cast == "int"){
+			
+				main_text += "\t" + "%"+str_i+" = fptosi double "+var.value+" to i32" + "\n";
+				str_i ++;
+				main_text += "\t" + "store " + var.type + " %" + (str_i-1) + ", " + var.type + "* %" + var.name;
+				return;
+			}
+			
+			if(cast == "double"){
+				if(var.value.length()==1)
+					var.value += ".0";
+			
+				main_text += "\t" + "%"+str_i+" = sitofp i32 "+var.value+" to i32" + "\n";
+				str_i ++;
+				main_text += "\t" + "store " + var.type + " %" + (str_i-1) + ", " + var.type + "* %" + var.name;
+				return;
+			}
+			
+  //%1 = load double, double* %ww
+  //%2 = fptosi double %1 to i32
+  //store i32 %2, i32* %a
+  
+  //%3 = load i32, i32* %a
+  //%4 = sitofp i32 %3 to double
+  //store double %4, double* %ww
+  
+			
 			main_text += "\t" + "store " + var.type + " " + var.value + ", " + var.type + "* %" + var.name;
 			main_text += "\n";
 		}
@@ -31,6 +60,34 @@ class LLVMGenerator{
 			main_text += "\t" + "store " + value.type + " "+ value.value + ", "+var.type+"* %"+ var.name + "\n";
 		}
 		str_i ++;
+	}
+	
+	static void ifDeclare(Variable var1, Variable var2,String relation){
+		
+		main_text += "\t%r." +  str_i    + " = load " + var1.type + ", " + var1.type + "* %" + var1.name + "\n";
+		main_text += "\t%r." + (str_i+1) + " = load " + var2.type + ", " + var2.type + "* %" + var2.name + "\n";
+		
+		
+		String rel = "";
+		
+		if(relation.equals("=="))
+			rel = "eq";
+		if(relation.equals("<"))
+			rel = "slt";
+		if(relation.equals("<="))
+			rel = "sle";
+		if(relation.equals(">"))
+			rel = "sgt";
+		if(relation.equals(">="))
+			rel = "sge";
+		
+		main_text += "\t%r." + (str_i+2) + " = icmp " + rel + " " + var1.type + " %r." +  str_i    + ", %r." +  (str_i+1) + "\n";
+		main_text += "\tbr i1 %r."+(str_i+2)+", label %label_"+ (label_i) +", label %label_" +(label_i+1) + "\n";
+		
+		main_text += "label_" +label_i + ":\n";
+		label_i += 2;
+		
+		str_i += 3;
 	}
 	
 	static Variable math(Variable var1, Variable var2, String operation){

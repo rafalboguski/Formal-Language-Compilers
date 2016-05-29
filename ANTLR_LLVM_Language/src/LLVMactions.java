@@ -7,7 +7,24 @@ public class LLVMactions extends RBBaseListener {
     String value;
 	
 	
+	@Override
+	public void exitIfdeclare(RBParser.IfdeclareContext ctx){
+		LLVMGenerator.ifDeclare(memory.get(ctx.variable_name(0).getText()),memory.get(ctx.variable_name(1).getText()), ctx.relation().getText());
+		
+	}
 
+	@Override
+	public void enterIfbody(RBParser.IfbodyContext ctx){
+		
+		
+		
+	}
+	
+	@Override
+	public void exitIfbody(RBParser.IfbodyContext ctx){
+		LLVMGenerator.main_text += "\tbr label %label_" +(LLVMGenerator.label_i-1)+ "\n";
+		LLVMGenerator.main_text +=   "label_" +(LLVMGenerator.label_i-1)+ ":\n";
+	}
 	
     @Override
     public void exitAssign(RBParser.AssignContext ctx) { 
@@ -98,8 +115,13 @@ public class LLVMactions extends RBBaseListener {
 				"i32",
 				(ctx.declare_variable_int().value_int() != null) ? ctx.declare_variable_int().value_int().getText() : null
 			);
+			if(ctx.declare_variable_int().value_double() != null)
+				var.value = ctx.declare_variable_int().value_double().getText();
 			memory.put(var.name, var);
-			LLVMGenerator.declare(var);
+			String cast = null;
+			if(ctx.declare_variable_int().CAST_INT() != null)
+				cast = "int";
+			LLVMGenerator.declare(var,cast);
 			//System.out.print("int " + ctx.declare_variable_int().variable_name().getText() + " = "+ctx.declare_variable_int().value_int().getText()+"\n");
 		}
 		if(ctx.declare_variable_double() != null){
@@ -108,8 +130,13 @@ public class LLVMactions extends RBBaseListener {
 				"double",
 				(ctx.declare_variable_double().value_double() != null) ? ctx.declare_variable_double().value_double().getText() : null
 			);
+			if(ctx.declare_variable_double().value_int() != null)
+				var.value = ctx.declare_variable_double().value_int().getText();
 			memory.put(var.name, var);
-			LLVMGenerator.declare(var);
+			String cast = null;
+			if(ctx.declare_variable_double().CAST_INT() != null)
+				cast = "double";
+			LLVMGenerator.declare(var, cast);
 			//System.out.print("int " + ctx.declare_variable_double().variable_name().getText() + " = "+ctx.declare_variable_double().value_double().getText()+"\n");
 		}
 		
