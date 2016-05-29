@@ -17,8 +17,17 @@ stat
 	| read_statement
 	| assign_statement
 	| if_statement
+	| for_statement
     ;
 	
+for_statement: for_declare for_body;
+	
+for_declare: 'for' '(' DIGIT ')'	                            #fordeclare
+		;
+for_body : '{' statements '}'                                   #forbody
+	   ;
+
+
 if_statement: if_declare if_body                           
 			;
 if_declare: 'if' '(' variable_name relation variable_name ')' #ifdeclare

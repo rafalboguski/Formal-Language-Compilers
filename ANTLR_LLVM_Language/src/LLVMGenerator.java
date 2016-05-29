@@ -5,6 +5,7 @@ class LLVMGenerator{
 	public static String main_text = "";
 	static int str_i = 1;
 	public static int label_i = 1;
+	public static int for_i = 1;
 	
 	static void declare(Variable var, String cast){
 		main_text += "\t%" + var.name + " = alloca " + var.type;
@@ -60,6 +61,33 @@ class LLVMGenerator{
 			main_text += "\t" + "store " + value.type + " "+ value.value + ", "+var.type+"* %"+ var.name + "\n";
 		}
 		str_i ++;
+	}
+	
+	static void forDeclare(String times){
+
+		main_text += "\t%for.iter."+for_i+" = alloca i32 \n";
+		main_text += "\tstore i32 0, i32* %for.iter." + for_i + "\n";
+        main_text += "\tbr label %for."+for_i+".declare" + "\n";
+
+		main_text += "for."+for_i+".declare:\n";                                  
+		main_text += "\t%r."+ str_i +  " = load i32, i32* %for.iter." + for_i + "\n";
+		main_text += "\t%r."+(str_i+1)+" = icmp slt i32 %r."+str_i+", " + times+"\n";
+		main_text += "\tbr i1 %r."+(str_i+1)+", label %for."+for_i+".execute, label %for."+for_i+".continue \n";
+		main_text += "for."+for_i+".execute:\n";
+		
+		str_i+=2;
+		for_i++;
+	}
+	
+	static void forExit(){
+		main_text += "\tbr label %for."+(for_i-1)+".update\n";
+		main_text += "for."+(for_i-1)+".update:\n";
+		main_text += "\t%r."+ str_i +  " = load i32, i32* %for.iter." + (for_i-1) + "\n";           
+		main_text += "\t%r."+ (str_i+1) +  " = add nsw i32 %r." + str_i + ", 1\n";   
+        main_text += "\tstore i32 %r." + (str_i+1) + ", i32* %for.iter." + (for_i-1) + "\n";   		
+		main_text += "\tbr label %for."+(for_i-1)+".declare" + "\n";  		
+		main_text += "for."+(for_i-1)+".continue:\n";
+		str_i+=2;     
 	}
 	
 	static void ifDeclare(Variable var1, Variable var2,String relation){

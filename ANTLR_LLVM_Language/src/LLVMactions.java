@@ -9,21 +9,27 @@ public class LLVMactions extends RBBaseListener {
 	
 	@Override
 	public void exitIfdeclare(RBParser.IfdeclareContext ctx){
-		LLVMGenerator.ifDeclare(memory.get(ctx.variable_name(0).getText()),memory.get(ctx.variable_name(1).getText()), ctx.relation().getText());
-		
+		LLVMGenerator.ifDeclare(memory.get(ctx.variable_name(0).getText()),memory.get(ctx.variable_name(1).getText()), ctx.relation().getText());		
 	}
 
-	@Override
-	public void enterIfbody(RBParser.IfbodyContext ctx){
-		
-		
-		
-	}
 	
 	@Override
 	public void exitIfbody(RBParser.IfbodyContext ctx){
 		LLVMGenerator.main_text += "\tbr label %label_" +(LLVMGenerator.label_i-1)+ "\n";
 		LLVMGenerator.main_text +=   "label_" +(LLVMGenerator.label_i-1)+ ":\n";
+	}
+	
+	@Override
+	public void exitFordeclare(RBParser.FordeclareContext ctx){
+		LLVMGenerator.forDeclare(ctx.DIGIT().getText());		
+	}
+	
+	@Override
+	public void exitForbody(RBParser.ForbodyContext ctx){
+		LLVMGenerator.forExit();
+		
+		//LLVMGenerator.main_text += "\tbr label %label_" +(LLVMGenerator.label_i-1)+ "\n";
+		//LLVMGenerator.main_text +=   "label_" +(LLVMGenerator.label_i-1)+ ":\n";
 	}
 	
     @Override
