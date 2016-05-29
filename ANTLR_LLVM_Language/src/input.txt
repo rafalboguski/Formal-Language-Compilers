@@ -1,6 +1,6 @@
 
-int a = 3;
-int b = 3;
+double a = 3.0;
+double b = 3.0;
 
 if ( a == b ) {
 	print(a);

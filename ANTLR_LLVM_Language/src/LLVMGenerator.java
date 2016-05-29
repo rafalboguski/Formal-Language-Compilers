@@ -81,7 +81,21 @@ class LLVMGenerator{
 		if(relation.equals(">="))
 			rel = "sge";
 		
-		main_text += "\t%r." + (str_i+2) + " = icmp " + rel + " " + var1.type + " %r." +  str_i    + ", %r." +  (str_i+1) + "\n";
+		if(var1.type.equals("double")){
+			rel = rel.replace("s","o");
+			if(relation.equals("=="))
+				rel = "oeq";
+		}
+		
+		String sick_of_this = "";
+		if(var1.type.equals("double")){
+			sick_of_this = "fcmp";
+		}
+		else{
+			sick_of_this = "icmp";
+		}
+		
+		main_text += "\t%r." + (str_i+2) + " = "+sick_of_this+" " + rel + " " + var1.type + " %r." +  str_i    + ", %r." +  (str_i+1) + "\n";
 		main_text += "\tbr i1 %r."+(str_i+2)+", label %label_"+ (label_i) +", label %label_" +(label_i+1) + "\n";
 		
 		main_text += "label_" +label_i + ":\n";
@@ -99,11 +113,11 @@ class LLVMGenerator{
 		main_text += "\t%r." + str_i     + " = load " + var1.type + ", " + var1.type + "* %" + var1.name + "\n";
 		main_text += "\t%r." + (str_i+1) + " = load " + var2.type + ", " + var2.type + "* %" + var2.name + "\n";
 		
-		if(var1.type == "i32" && var2.type == "i32"){
+		if(var1.type.equals("i32") && var2.type.equals("i32")){
 			main_text += "\t%r." + (str_i+2) + " = "+operation+" nsw " + var1.type + " %r." + str_i + ", %r." + (str_i+1) + "\n";
 			type = "i32";
 		}
-		if(var1.type == "double" && var2.type == "double"){
+		if(var1.type.equals("double") && var2.type.equals("double")){
 			main_text += "\t%r." + (str_i+2) + " = f"+operation+" " + var1.type + " %r." + str_i + ", %r." + (str_i+1) + "\n";
 			type = "double";
 		}
@@ -115,7 +129,7 @@ class LLVMGenerator{
 	
 	static void read(Variable var) {
 		
-		if(var.type == "double"){
+		if(var.type.equals("double")){
 			header_text += "@.str." + str_i + " = private unnamed_addr constant [4 x i8] c\"%lf\\00\"\n";
 			main_text += "\t" + "call i32 (i8*, ...) @__isoc99_scanf(i8* getelementptr inbounds ([4 x i8], [4 x i8]* @.str." + str_i + ", i32 0, i32 0), double* %" + var.name + ")\n";
 		}
@@ -132,7 +146,7 @@ class LLVMGenerator{
 		
 		main_text += "\t" + "%print" + str_i + " = load " + var.type + ", " + var.type + "* %" + var.name + "\n";
 
-		if(var.type == "double"){
+		if(var.type.equals("double")){
 			header_text += "@.str." + str_i + " = private unnamed_addr constant [5 x i8] c\"%lf\\0A\\00\"\n";
 			main_text += "\t" + "call i32 (i8*, ...) @printf(i8* getelementptr inbounds ([5 x i8], [5 x i8]* @.str." + str_i + ", i32 0, i32 0), " + var.type + " %print" + str_i + ")" + "\n";
 		}
