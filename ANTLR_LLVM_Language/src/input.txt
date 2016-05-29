@@ -1,16 +1,17 @@
 
 
-double a = 3.0;
-double b = 4.0;
+int liczba = 0;
+int przyrost = 1;
+int grarnica = 3;
 
-
-for(5){
-	print(a);
+for(10){
+	if(liczba > grarnica){
+		print(liczba);
+	}
+	liczba = liczba + przyrost;
 }
 
-if(a<b){
-	print(b);
-}
+
 
 
 
