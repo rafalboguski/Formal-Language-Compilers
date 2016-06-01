@@ -78,14 +78,25 @@ class LLVMGenerator{
 					main_text += "\t" +  "%var."+str_i+" = load "+sourceVar.type+", "+sourceVar.type+"* @"+ sourceVar.name + "\n";
 				else
 					main_text += "\t" +  "%var."+str_i+" = load "+sourceVar.type+", "+sourceVar.type+"* %var."+ sourceVar.name + "\n";
-				main_text += "\t" + "store " + sourceVar.type + " %var."+ str_i + ", "+var.type+"* %var."+ var.name + "\n";
+				
+				if(var.global)
+					main_text += "\t" + "store " + sourceVar.type + " %var."+ str_i + ", "+var.type+"* @"+ var.name + "\n";
+				else
+					main_text += "\t" + "store " + sourceVar.type + " %var."+ str_i + ", "+var.type+"* %var."+ var.name + "\n";
 			}
 			else{
-				main_text += "\t" + "store " + sourceVar.type + " %"+ sourceVar.name + ", "+var.type+"* %var."+ var.name + "\n";
+				
+				if(var.global)
+					main_text += "\t" + "store " + sourceVar.type + " %"+ sourceVar.name + ", "+var.type+"* @"+ var.name + "\n";
+				else
+					main_text += "\t" + "store " + sourceVar.type + " %"+ sourceVar.name + ", "+var.type+"* %var."+ var.name + "\n";
 			}
 		}
 		else{
-			main_text += "\t" + "store " + value.type + " "+ value.value + ", "+var.type+"* %var."+ var.name + "\n";
+			if(var.global)
+				main_text += "\t" + "store " + value.type + " "+ value.value + ", "+var.type+"* @"+ var.name + "\n";
+			else
+				main_text += "\t" + "store " + value.type + " "+ value.value + ", "+var.type+"* %var."+ var.name + "\n";
 		}
 		str_i ++;
 	}

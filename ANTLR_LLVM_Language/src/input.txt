@@ -1,32 +1,23 @@
 
 
-int funkcja(int A int B){
-	
-	int C;
-
-	C = A + B;
-	
-	return C;
-}
 
 global int globA = 20;
-global int globB = 30;
-global double globC;
 
 
 
 	int a;
-	int b;
-	int c;
+	int b = 34;
+
 	
+	
+
+	
+	globA = 123;
+	
+
 	a = globA;
-	b = globB;
-	
-	b = a + b;
-	
-	c = funkcja(a b);
-	
-	print(c);
+
+	print(a);
 
 	
 
