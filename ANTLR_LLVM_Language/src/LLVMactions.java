@@ -1,11 +1,50 @@
 
 import java.util.HashMap;
+import  java.util.*;
 
 public class LLVMactions extends RBBaseListener {
 
     HashMap<String, Variable> memory = new HashMap<String, Variable>();
     String value;
 	
+	
+	
+	@Override
+	public void exitFdef(RBParser.FdefContext ctx){
+		
+		String type = "";
+		
+		if(ctx.TYPE_INT() != null)
+			type = ctx.TYPE_INT().getText();
+		else
+			type = ctx.TYPE_double().getText();
+		
+		List<Variable> parmas = new ArrayList<Variable>();
+		
+		for(RBParser.VariableContext v : ctx.variable()){
+			parmas.add(new Variable(v.variable_name().getText(), v.TYPE_INT() != null? v.TYPE_INT().getText():v.TYPE_double().getText()));
+		}
+		
+		LLVMGenerator.funDeclare(type, ctx.variable_name().getText(), parmas);		
+	}
+	
+	@Override
+	public void exitFbody(RBParser.FbodyContext ctx){
+		
+		LLVMGenerator.funEnd(memory.get(ctx.variable_name().getText()));		
+	}
+	@Override
+	public void exitFcall(RBParser.FcallContext ctx){
+		
+		List<Variable> parmas = new ArrayList<Variable>();
+		
+		for(RBParser.Variable_nameContext name : ctx.variable_names().variable_name()){
+			parmas.add(memory.get(name.getText()));
+		}
+		
+		LLVMGenerator.funCall(memory.get(ctx.variable_name(0).getText()),ctx.variable_name(1).getText(),parmas);		
+	}
+
 	
 	@Override
 	public void exitIfdeclare(RBParser.IfdeclareContext ctx){

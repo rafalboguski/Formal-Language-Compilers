@@ -4,11 +4,23 @@ options {
 }
 
 prog
-    : statements
+	: function* statements
     ;
 
+function: 
+	fundef funbody
+;
+
+fundef : (TYPE_INT|TYPE_double) variable_name '(' (variable)* ')'  #fdef
+	;
+	
+funbody: '{' statements  'return' variable_name ';' '}' 		#fbody
+;
+
+variable: (TYPE_INT|TYPE_double) variable_name ;
+	
 statements
-    : stat+
+    : stat*
     ;
 
 stat
@@ -18,7 +30,13 @@ stat
 	| assign_statement
 	| if_statement
 	| for_statement
+	| fun_call_statement
     ;
+	
+fun_call_statement: variable_name '=' variable_name '(' (variable_names) ')' ';' #fcall
+	;
+
+variable_names: (variable_name)*;
 	
 for_statement: for_declare for_body;
 	

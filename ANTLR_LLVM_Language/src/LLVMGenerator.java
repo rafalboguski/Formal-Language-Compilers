@@ -1,9 +1,13 @@
+import java.util.*;
+
 
 class LLVMGenerator{
    
 	static String header_text = "";
 	public static String main_text = "";
+	public static String fun_text = "";
 	static int str_i = 1;
+	static int fun_i = 1;
 	public static int label_i = 1;
 	public static int for_i = 1;
 	
@@ -61,6 +65,94 @@ class LLVMGenerator{
 			main_text += "\t" + "store " + value.type + " "+ value.value + ", "+var.type+"* %"+ var.name + "\n";
 		}
 		str_i ++;
+	}
+	
+	
+	private static String main_text_Copy;
+	
+	static void funDeclare(String type, String name, List<Variable> parmas){
+		
+		if(type.equals("int"))
+			type = "i32";
+		
+		fun_text += "define " +type+ " @" +name+"(";
+		
+		String parDeclare = "";
+		for(int i = 0; i < parmas.size();i++){
+			Variable v = parmas.get(i);
+			
+			if(v.type.equals("int"))
+				v.type = "i32";
+			
+			fun_text += " " + v.type+ " %p." +fun_i;
+			if(i<parmas.size()-1){
+				fun_text += ",";
+			}
+			
+			parDeclare += funParamDec(v, null);
+			
+			fun_i++;
+			
+			// i deklaracje zmiennych
+		}
+		
+		fun_text += "){\n";
+		fun_text += parDeclare;
+		
+		main_text_Copy = main_text;
+		
+		main_text = "";
+
+	}
+	
+	static void funEnd(Variable returnVar){
+		fun_text += main_text;
+		main_text = main_text_Copy;
+		
+		fun_text += "\t%r." + fun_i+ "= load "+returnVar.type+ ", "+returnVar.type+"* %"+returnVar.name +"\n";
+		fun_text += "\tret " +returnVar.type+ " %r."+fun_i+"\n}";
+		//%6 = load i32, i32* %C
+		//ret i32 %6	
+		fun_i++;	
+	}
+	
+	
+	static void funCall(Variable var, String funName, List<Variable> params){
+		
+		//%1 = load i32, i32* %a
+		//%2 = load i32, i32* %b
+		
+		
+		
+	
+		String parDeclare = "";
+		for(int i = 0; i < params.size();i++){
+			Variable v = params.get(i);
+			main_text += "\t%" + str_i + " = load " + v.type + ", " + v.type+ "* %"+ v.name + "\n";
+			
+			parDeclare += " " + v.type+ " %" +str_i;
+			if(i<params.size()-1){
+				parDeclare += ",";
+			}
+			
+			str_i++;
+		}
+		//%3 = call i32 @funkcja(i32 %1, i32 %2)
+		//store i32 %3, i32* %c
+		main_text += "\t%" + str_i + " = call " + var.type + " @" +funName+ "("+ parDeclare + ")\n";
+		main_text += "\tstore " + var.type + " %" + str_i + ", " + var.type +  "* %"+ var.name + "\n";	
+		
+		str_i++;
+	}
+	
+	static String funParamDec(Variable var, String cast){
+		String ret = "";
+		ret += "\t%" + var.name + " = alloca " + var.type;
+		ret += "\n";
+		
+		ret += "\t" + "store " + var.type + " %p." + str_i + ", " + var.type + "* %" + var.name;
+		ret += "\n";
+		return ret;
 	}
 	
 	static void forDeclare(String times){
@@ -193,6 +285,9 @@ class LLVMGenerator{
 		text += "declare i32 @__isoc99_scanf(i8*, ...)\n";
 		text += "\n";
 		text += header_text;
+		text += "\n\n";
+		
+		text += fun_text;
 		text += "\n\n";
 		text += "define i32 @main() nounwind{\n\n";
 		text += main_text;

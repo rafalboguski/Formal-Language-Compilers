@@ -1,17 +1,24 @@
 
-
-int liczba = 0;
-int przyrost = 1;
-int grarnica = 3;
-
-for(10){
-	if(liczba > grarnica){
-		print(liczba);
-	}
-	liczba = liczba + przyrost;
+int funkcja(int A int B){
+	
+	int C = 3;
+	C = 4;
+	
+	
+	return C;
 }
 
 
+
+	int a = 4;
+	int b = 7;
+	int c;
+	
+	c = funkcja(a b);
+	
+	print(c);
+
+	
 
 
 
