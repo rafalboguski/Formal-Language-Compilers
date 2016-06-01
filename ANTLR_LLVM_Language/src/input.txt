@@ -2,7 +2,7 @@
 int funkcja(int A int B){
 	
 	int C = 3;
-	C = 4;
+	C = A;
 	
 	
 	return C;
@@ -13,6 +13,8 @@ int funkcja(int A int B){
 	int a = 4;
 	int b = 7;
 	int c;
+	
+	b = a + b;
 	
 	c = funkcja(a b);
 	

@@ -23,6 +23,14 @@ public class LLVMactions extends RBBaseListener {
 		
 		for(RBParser.VariableContext v : ctx.variable()){
 			parmas.add(new Variable(v.variable_name().getText(), v.TYPE_INT() != null? v.TYPE_INT().getText():v.TYPE_double().getText()));
+			
+			Variable var = new Variable(
+				v.variable_name().getText(),
+				v.TYPE_INT() != null? "i32":v.TYPE_double().getText(),
+				null
+			);
+			
+			memory.put(var.name, var);
 		}
 		
 		LLVMGenerator.funDeclare(type, ctx.variable_name().getText(), parmas);		

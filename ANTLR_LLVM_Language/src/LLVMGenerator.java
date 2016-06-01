@@ -53,12 +53,17 @@ class LLVMGenerator{
 		
 		//store i32 %2, i32* %b, align 4
 		if(value == null){
+			//System.out.println("DEBUG");
+			//System.out.println(sourceVar);
+			//System.out.println(generate());
+			
+			
 			if(!sourceVar.name.contains("r.")){
 				main_text += "\t" +  "%var."+str_i+" = load "+sourceVar.type+", "+sourceVar.type+"* %var."+ sourceVar.name + "\n";
 				main_text += "\t" + "store " + sourceVar.type + " %var."+ str_i + ", "+var.type+"* %var."+ var.name + "\n";
 			}
 			else{
-				main_text += "\t" + "store " + sourceVar.type + " %var."+ sourceVar.name + ", "+var.type+"* %var."+ var.name + "\n";
+				main_text += "\t" + "store " + sourceVar.type + " %"+ sourceVar.name + ", "+var.type+"* %var."+ var.name + "\n";
 			}
 		}
 		else{
@@ -105,6 +110,16 @@ class LLVMGenerator{
 
 	}
 	
+	static String funParamDec(Variable var, String cast){
+		String ret = "";
+		ret += "\t%var." + var.name + " = alloca " + var.type;
+		ret += "\n";
+		
+		ret += "\t" + "store " + var.type + " %p." + fun_i + ", " + var.type + "* %var." + var.name;
+		ret += "\n";
+		return ret;
+	}
+	
 	static void funEnd(Variable returnVar){
 		fun_text += main_text;
 		main_text = main_text_Copy;
@@ -145,16 +160,7 @@ class LLVMGenerator{
 		str_i++;
 	}
 	
-	static String funParamDec(Variable var, String cast){
-		String ret = "";
-		ret += "\t%var." + var.name + " = alloca " + var.type;
-		ret += "\n";
-		
-		ret += "\t" + "store " + var.type + " %p." + str_i + ", " + var.type + "* %var." + var.name;
-		ret += "\n";
-		return ret;
-	}
-	
+
 	static void forDeclare(String times){
 
 		main_text += "\t%for.iter."+for_i+" = alloca i32 \n";
