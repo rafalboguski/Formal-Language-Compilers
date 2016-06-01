@@ -72,12 +72,12 @@ class LLVMGenerator{
 		//store i32 %2, i32* %b, align 4
 		if(value == null){
 			//System.out.println("DEBUG");
-			//System.out.println(sourceVar);
-			//System.out.println(generate());
-			
 			
 			if(!sourceVar.name.contains("r.")){
-				main_text += "\t" +  "%var."+str_i+" = load "+sourceVar.type+", "+sourceVar.type+"* %var."+ sourceVar.name + "\n";
+				if(sourceVar.global)
+					main_text += "\t" +  "%var."+str_i+" = load "+sourceVar.type+", "+sourceVar.type+"* @"+ sourceVar.name + "\n";
+				else
+					main_text += "\t" +  "%var."+str_i+" = load "+sourceVar.type+", "+sourceVar.type+"* %var."+ sourceVar.name + "\n";
 				main_text += "\t" + "store " + sourceVar.type + " %var."+ str_i + ", "+var.type+"* %var."+ var.name + "\n";
 			}
 			else{

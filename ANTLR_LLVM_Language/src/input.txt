@@ -9,13 +9,18 @@ int funkcja(int A int B){
 	return C;
 }
 
-global int globA;
-global int globB = 34;
+global int globA = 20;
+global int globB = 30;
 global double globC;
 
-	int a = 4;
-	int b = 7;
+
+
+	int a;
+	int b;
 	int c;
+	
+	a = globA;
+	b = globB;
 	
 	b = a + b;
 	
