@@ -124,8 +124,8 @@ class LLVMGenerator{
 		fun_text += main_text;
 		main_text = main_text_Copy;
 		
-		fun_text += "\t%r." + fun_i+ "= load "+returnVar.type+ ", "+returnVar.type+"* %var."+returnVar.name +"\n";
-		fun_text += "\tret " +returnVar.type+ " %r."+fun_i+"\n}";
+		fun_text += "\t%r." + str_i+ "= load "+returnVar.type+ ", "+returnVar.type+"* %var."+returnVar.name +"\n";
+		fun_text += "\tret " +returnVar.type+ " %r."+str_i+"\n}";
 		//%6 = load i32, i32* %C
 		//ret i32 %6	
 		fun_i++;	

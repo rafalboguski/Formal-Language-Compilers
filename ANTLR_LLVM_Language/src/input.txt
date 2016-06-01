@@ -1,9 +1,9 @@
 
 int funkcja(int A int B){
 	
-	int C = 3;
-	C = A;
-	
+	int C;
+
+	C = A + B;
 	
 	return C;
 }
