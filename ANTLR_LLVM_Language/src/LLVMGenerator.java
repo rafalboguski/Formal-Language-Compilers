@@ -12,16 +12,16 @@ class LLVMGenerator{
 	public static int for_i = 1;
 	
 	static void declare(Variable var, String cast){
-		main_text += "\t%" + var.name + " = alloca " + var.type;
+		main_text += "\t%var." + var.name + " = alloca " + var.type;
 		main_text += "\n";
 		
 		if(var.value != null) {
 			
 			if(cast == "int"){
 			
-				main_text += "\t" + "%"+str_i+" = fptosi double "+var.value+" to i32" + "\n";
+				main_text += "\t" + "%var."+str_i+" = fptosi double "+var.value+" to i32" + "\n";
 				str_i ++;
-				main_text += "\t" + "store " + var.type + " %" + (str_i-1) + ", " + var.type + "* %" + var.name;
+				main_text += "\t" + "store " + var.type + " %var." + (str_i-1) + ", " + var.type + "* %var." + var.name;
 				return;
 			}
 			
@@ -29,9 +29,9 @@ class LLVMGenerator{
 				if(var.value.length()==1)
 					var.value += ".0";
 			
-				main_text += "\t" + "%"+str_i+" = sitofp i32 "+var.value+" to i32" + "\n";
+				main_text += "\t" + "%var."+str_i+" = sitofp i32 "+var.value+" to i32" + "\n";
 				str_i ++;
-				main_text += "\t" + "store " + var.type + " %" + (str_i-1) + ", " + var.type + "* %" + var.name;
+				main_text += "\t" + "store " + var.type + " %var." + (str_i-1) + ", " + var.type + "* %var." + var.name;
 				return;
 			}
 			
@@ -44,7 +44,7 @@ class LLVMGenerator{
   //store double %4, double* %ww
   
 			
-			main_text += "\t" + "store " + var.type + " " + var.value + ", " + var.type + "* %" + var.name;
+			main_text += "\t" + "store " + var.type + " " + var.value + ", " + var.type + "* %var." + var.name;
 			main_text += "\n";
 		}
 	}
@@ -54,15 +54,15 @@ class LLVMGenerator{
 		//store i32 %2, i32* %b, align 4
 		if(value == null){
 			if(!sourceVar.name.contains("r.")){
-				main_text += "\t" +  "%"+str_i+" = load "+sourceVar.type+", "+sourceVar.type+"* %"+ sourceVar.name + "\n";
-				main_text += "\t" + "store " + sourceVar.type + " %"+ str_i + ", "+var.type+"* %"+ var.name + "\n";
+				main_text += "\t" +  "%var."+str_i+" = load "+sourceVar.type+", "+sourceVar.type+"* %var."+ sourceVar.name + "\n";
+				main_text += "\t" + "store " + sourceVar.type + " %var."+ str_i + ", "+var.type+"* %var."+ var.name + "\n";
 			}
 			else{
-				main_text += "\t" + "store " + sourceVar.type + " %"+ sourceVar.name + ", "+var.type+"* %"+ var.name + "\n";
+				main_text += "\t" + "store " + sourceVar.type + " %var."+ sourceVar.name + ", "+var.type+"* %var."+ var.name + "\n";
 			}
 		}
 		else{
-			main_text += "\t" + "store " + value.type + " "+ value.value + ", "+var.type+"* %"+ var.name + "\n";
+			main_text += "\t" + "store " + value.type + " "+ value.value + ", "+var.type+"* %var."+ var.name + "\n";
 		}
 		str_i ++;
 	}
@@ -109,7 +109,7 @@ class LLVMGenerator{
 		fun_text += main_text;
 		main_text = main_text_Copy;
 		
-		fun_text += "\t%r." + fun_i+ "= load "+returnVar.type+ ", "+returnVar.type+"* %"+returnVar.name +"\n";
+		fun_text += "\t%r." + fun_i+ "= load "+returnVar.type+ ", "+returnVar.type+"* %var."+returnVar.name +"\n";
 		fun_text += "\tret " +returnVar.type+ " %r."+fun_i+"\n}";
 		//%6 = load i32, i32* %C
 		//ret i32 %6	
@@ -128,9 +128,9 @@ class LLVMGenerator{
 		String parDeclare = "";
 		for(int i = 0; i < params.size();i++){
 			Variable v = params.get(i);
-			main_text += "\t%" + str_i + " = load " + v.type + ", " + v.type+ "* %"+ v.name + "\n";
+			main_text += "\t%var." + str_i + " = load " + v.type + ", " + v.type+ "* %var."+ v.name + "\n";
 			
-			parDeclare += " " + v.type+ " %" +str_i;
+			parDeclare += " " + v.type+ " %var." +str_i;
 			if(i<params.size()-1){
 				parDeclare += ",";
 			}
@@ -139,18 +139,18 @@ class LLVMGenerator{
 		}
 		//%3 = call i32 @funkcja(i32 %1, i32 %2)
 		//store i32 %3, i32* %c
-		main_text += "\t%" + str_i + " = call " + var.type + " @" +funName+ "("+ parDeclare + ")\n";
-		main_text += "\tstore " + var.type + " %" + str_i + ", " + var.type +  "* %"+ var.name + "\n";	
+		main_text += "\t%var." + str_i + " = call " + var.type + " @" +funName+ "("+ parDeclare + ")\n";
+		main_text += "\tstore " + var.type + " %var." + str_i + ", " + var.type +  "* %var."+ var.name + "\n";	
 		
 		str_i++;
 	}
 	
 	static String funParamDec(Variable var, String cast){
 		String ret = "";
-		ret += "\t%" + var.name + " = alloca " + var.type;
+		ret += "\t%var." + var.name + " = alloca " + var.type;
 		ret += "\n";
 		
-		ret += "\t" + "store " + var.type + " %p." + str_i + ", " + var.type + "* %" + var.name;
+		ret += "\t" + "store " + var.type + " %p." + str_i + ", " + var.type + "* %var." + var.name;
 		ret += "\n";
 		return ret;
 	}
@@ -184,8 +184,8 @@ class LLVMGenerator{
 	
 	static void ifDeclare(Variable var1, Variable var2,String relation){
 		
-		main_text += "\t%r." +  str_i    + " = load " + var1.type + ", " + var1.type + "* %" + var1.name + "\n";
-		main_text += "\t%r." + (str_i+1) + " = load " + var2.type + ", " + var2.type + "* %" + var2.name + "\n";
+		main_text += "\t%r." +  str_i    + " = load " + var1.type + ", " + var1.type + "* %var." + var1.name + "\n";
+		main_text += "\t%r." + (str_i+1) + " = load " + var2.type + ", " + var2.type + "* %var." + var2.name + "\n";
 		
 		
 		String rel = "";
@@ -230,8 +230,8 @@ class LLVMGenerator{
 		//%2 = add nsw i32 %1, 4
 		String type = null;
 		
-		main_text += "\t%r." + str_i     + " = load " + var1.type + ", " + var1.type + "* %" + var1.name + "\n";
-		main_text += "\t%r." + (str_i+1) + " = load " + var2.type + ", " + var2.type + "* %" + var2.name + "\n";
+		main_text += "\t%r." + str_i     + " = load " + var1.type + ", " + var1.type + "* %var." + var1.name + "\n";
+		main_text += "\t%r." + (str_i+1) + " = load " + var2.type + ", " + var2.type + "* %var." + var2.name + "\n";
 		
 		if(var1.type.equals("i32") && var2.type.equals("i32")){
 			main_text += "\t%r." + (str_i+2) + " = "+operation+" nsw " + var1.type + " %r." + str_i + ", %r." + (str_i+1) + "\n";
@@ -251,12 +251,12 @@ class LLVMGenerator{
 		
 		if(var.type.equals("double")){
 			header_text += "@.str." + str_i + " = private unnamed_addr constant [4 x i8] c\"%lf\\00\"\n";
-			main_text += "\t" + "call i32 (i8*, ...) @__isoc99_scanf(i8* getelementptr inbounds ([4 x i8], [4 x i8]* @.str." + str_i + ", i32 0, i32 0), double* %" + var.name + ")\n";
+			main_text += "\t" + "call i32 (i8*, ...) @__isoc99_scanf(i8* getelementptr inbounds ([4 x i8], [4 x i8]* @.str." + str_i + ", i32 0, i32 0), double* %var." + var.name + ")\n";
 		}
 		else{
 			                             
 			header_text += "@.str." + str_i + " = private unnamed_addr constant [3 x i8] c\"%d\\00\"\n";
-			main_text += "\t" + "call i32 (i8*, ...) @__isoc99_scanf(i8* getelementptr inbounds ([3 x i8], [3 x i8]* @.str." + str_i + ", i32 0, i32 0), i32* %" + var.name + ")\n";
+			main_text += "\t" + "call i32 (i8*, ...) @__isoc99_scanf(i8* getelementptr inbounds ([3 x i8], [3 x i8]* @.str." + str_i + ", i32 0, i32 0), i32* %var." + var.name + ")\n";
 		}
 		str_i++;
 	}
@@ -264,7 +264,7 @@ class LLVMGenerator{
 	static void print(Variable var){
 		//System.out.print("DEBUG print"+var.value);
 		
-		main_text += "\t" + "%print" + str_i + " = load " + var.type + ", " + var.type + "* %" + var.name + "\n";
+		main_text += "\t" + "%print" + str_i + " = load " + var.type + ", " + var.type + "* %var." + var.name + "\n";
 
 		if(var.type.equals("double")){
 			header_text += "@.str." + str_i + " = private unnamed_addr constant [5 x i8] c\"%lf\\0A\\00\"\n";
