@@ -4,6 +4,8 @@ public class Variable{
 		public String type;
 		public String value;
 		
+		public boolean global = false;
+		
 		public Variable(String name, String t){
 			this.name = name;
 			this.type = t;

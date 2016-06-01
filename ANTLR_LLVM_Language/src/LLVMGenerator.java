@@ -12,8 +12,26 @@ class LLVMGenerator{
 	public static int for_i = 1;
 	
 	static void declare(Variable var, String cast){
+		
+
+		if(var.global){
+			
+			//@global = global i32 11
+			//@global2 = common global i32 0
+			if (var.value != null)
+				header_text += "@"+var.name+" = global "+var.type+" " +var.value+"\n";
+			else{
+				String val = var.type.equals("double")? "0.0": "0";
+				header_text += "@"+var.name+" = common global "+var.type+" " +val+"\n";
+			}
+			return;
+		}
+		
+		
+		
 		main_text += "\t%var." + var.name + " = alloca " + var.type;
 		main_text += "\n";
+		
 		
 		if(var.value != null) {
 			

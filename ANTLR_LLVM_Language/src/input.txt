@@ -1,4 +1,5 @@
 
+
 int funkcja(int A int B){
 	
 	int C;
@@ -8,7 +9,9 @@ int funkcja(int A int B){
 	return C;
 }
 
-
+global int globA;
+global int globB = 34;
+global double globC;
 
 	int a = 4;
 	int b = 7;

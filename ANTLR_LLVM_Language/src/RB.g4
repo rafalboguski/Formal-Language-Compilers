@@ -57,8 +57,19 @@ relation: ('=='|'<'|'<='|'>'|'>=');
 declare_variable
     :   declare_variable_int
     |   declare_variable_double
+	|	declare_global_int
+	|	declare_global_double
     ;
-	
+declare_global_int:
+	 	'global' TYPE_INT variable_name END
+	| 	'global' TYPE_INT variable_name EQUALS value_int END
+;	
+
+declare_global_double:
+	 	'global' TYPE_double variable_name END
+	| 	'global' TYPE_double variable_name EQUALS value_double END
+;	
+
 declare_variable_int
 	: 	TYPE_INT variable_name END
 	| 	TYPE_INT variable_name EQUALS (CAST_INT|CAST_DOUBLE)? (value_int|value_double) END

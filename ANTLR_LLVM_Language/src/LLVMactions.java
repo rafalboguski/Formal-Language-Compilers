@@ -193,6 +193,36 @@ public class LLVMactions extends RBBaseListener {
 			//System.out.print("int " + ctx.declare_variable_double().variable_name().getText() + " = "+ctx.declare_variable_double().value_double().getText()+"\n");
 		}
 		
+		if(ctx.declare_global_int() != null){
+			
+			Variable var = new Variable(
+				ctx.declare_global_int().variable_name().getText(),
+				"i32",
+				(ctx.declare_global_int().value_int() != null) ? ctx.declare_global_int().value_int().getText() : null
+			);
+			
+			var.global = true;
+			memory.put(var.name, var);
+			String cast = null;
+			
+			LLVMGenerator.declare(var,cast);
+		}
+		
+		if(ctx.declare_global_double()!= null){
+			
+			Variable var = new Variable(
+				ctx.declare_global_double().variable_name().getText(),
+				"double",
+				(ctx.declare_global_double().value_double() != null) ? ctx.declare_global_double().value_double().getText() : null
+			);
+
+			var.global = true;
+			memory.put(var.name, var);
+			String cast = null;
+		
+			LLVMGenerator.declare(var, cast);
+		}
+		
 		
 	}
 
